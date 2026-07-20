@@ -59,6 +59,7 @@ button:hover, .button:hover { background: var(--green-dark); }
 .article-hero h1 { margin: 0 0 1.5rem; font-size: clamp(2rem, 6vw, 2.8rem); line-height: 1.15; }
 .article-hero-meta { color: #bbb; }
 .article-author { color: white; }
+.article-author { text-decoration: none; }
 .owner-actions { display: flex; gap: .75rem; margin-left: 1rem; }
 .owner-actions a { color: white; }
 .owner-actions span { color: #bbb; }
@@ -91,6 +92,16 @@ button:hover, .button:hover { background: var(--green-dark); }
 .comment footer .inline-form { margin-left: .5rem; }
 .sidebar { align-self: start; padding: .75rem 1rem; border-radius: .25rem; background: var(--wash); font-size: .9rem; }
 .sidebar h2 { font-size: 1rem; }
+.profile-hero { padding: 2.5rem 0; background: var(--wash); text-align: center; }
+.profile-summary { display: grid; justify-items: center; gap: .5rem; }
+.profile-summary h1, .profile-summary p { margin: 0; }
+.profile-summary p { color: var(--muted); }
+.profile-avatar { width: 5rem; height: 5rem; font-size: 2rem; }
+.profile-summary form, .profile-summary .button { margin-top: .75rem; }
+.secondary-button { border-color: var(--muted); color: var(--muted); background: transparent; }
+.secondary-button:hover { border-color: var(--ink); color: white; background: var(--ink); }
+.profile-articles { max-width: 760px; padding-block: 2rem; }
+.profile-articles h2 { border-bottom: 2px solid var(--green); padding-bottom: .5rem; font-size: 1rem; color: var(--green); }
 .pagination { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; }
 .pagination a { color: var(--green); }
 .pagination .disabled { pointer-events: none; color: #bbb; text-decoration: none; }

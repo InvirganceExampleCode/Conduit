@@ -23,7 +23,8 @@
                 </virge:if>
                 <virge:if test="${not empty sessionScope.currentUserId}">
                     <a href="${root}/views/editor/create">New article</a>
-                    <a href="${root}/auth/settings">${virge:html(sessionScope.currentUsername)}</a>
+                    <a href="${root}/auth/settings">Settings</a>
+                    <a href="${root}/views/profile/${virge:urlparam(sessionScope.currentUsername)}">${virge:html(sessionScope.currentUsername)}</a>
                     <form method="post" action="${root}/auth/logout" class="nav-form">
                         <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
                         <button type="submit" class="link-button">Log out</button>

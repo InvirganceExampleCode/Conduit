@@ -40,7 +40,7 @@
                     <div class="article-meta">
                         <div class="avatar" aria-hidden="true">${virge:html(article.username.substring(0, 1))}</div>
                         <div>
-                            <a class="author" href="#profile">${virge:html(article.username)}</a>
+                            <a class="author" href="${root}/views/profile/${virge:urlparam(article.username)}">${virge:html(article.username)}</a>
                             <time>${virge:html(article.created_at)}</time>
                         </div>
                         <virge:if test="${empty sessionScope.currentUserId}">

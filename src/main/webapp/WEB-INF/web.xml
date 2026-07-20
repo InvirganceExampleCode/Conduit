@@ -36,6 +36,7 @@
         <url-pattern>/views/favorite/*</url-pattern>
         <url-pattern>/api/articles</url-pattern>
         <url-pattern>/api/articles/*</url-pattern>
+        <url-pattern>/api/profiles/*</url-pattern>
     </filter-mapping>
 
     <session-config>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoutedService>
+    <routes>
+        <map>
+            <entry>
+                <string>/api/profiles/*/follow</string>
+                <RESTService>
+                    <POST>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/profiles/{username}/follow</path></PathVariable>
+                                    <SessionParameter><name>followerId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                merge into follows (follower_id, followed_id) key(follower_id, followed_id)
+                                select :followerId, u.id
+                                from users u
+                                where u.username = :username and u.id <> :followerId
+                            ]]></sql>
+                        </UpdateService>
+                    </POST>
+                    <DELETE>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/profiles/{username}/follow</path></PathVariable>
+                                    <SessionParameter><name>followerId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                delete from follows
+                                where follower_id = :followerId
+                                  and followed_id = (select id from users where username = :username)
+                            ]]></sql>
+                        </UpdateService>
+                    </DELETE>
+                </RESTService>
+            </entry>
+        </map>
+    </routes>
+</RoutedService>

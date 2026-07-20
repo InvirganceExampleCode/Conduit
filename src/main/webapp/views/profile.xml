@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HypermediaService>
+    <parameters>
+        <list>
+            <PathVariable><path>/views/profile/{username}</path></PathVariable>
+        </list>
+    </parameters>
+    <page>/WEB-INF/pages/profile.jsp</page>
+    <verbs>
+        <list>
+            <verb>
+                <name>follow</name>
+                <service>/api/profiles/{username}/follow</service>
+                <method>POST</method>
+                <redirect>/views/profile/{username}</redirect>
+            </verb>
+            <verb>
+                <name>unfollow</name>
+                <service>/api/profiles/{username}/follow</service>
+                <method>DELETE</method>
+                <redirect>/views/profile/{username}</redirect>
+            </verb>
+        </list>
+    </verbs>
+</HypermediaService>

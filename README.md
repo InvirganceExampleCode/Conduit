@@ -16,11 +16,12 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Authenticated article creation, editing, deletion, and transactional tag updates
 - Authenticated comment creation and owner-only deletion
 - Favorite and unfavorite actions from article pages and the global feed
+- Public profiles with authored articles and follow/unfollow actions
 - Registration, login, logout, CSRF protection, and session-backed identity
 - Protected account settings page
 - Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services
 
-Follows and profiles are intentionally left for subsequent vertical slices.
+The personalized feed and final RealWorld compatibility refinements are intentionally left for subsequent vertical slices.
 
 ## Build and run
 

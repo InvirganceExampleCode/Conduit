@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoutedService>
+    <routes>
+        <map>
+            <entry>
+                <string>/services/profile/*/articles</string>
+                <SelectService>
+                    <parameters>
+                        <list>
+                            <PathVariable><path>/services/profile/{username}/articles</path></PathVariable>
+                            <SessionParameter>
+                                <name>currentUserId</name>
+                                <sessionKey>currentUserId</sessionKey>
+                                <defaultValue>0</defaultValue>
+                            </SessionParameter>
+                        </list>
+                    </parameters>
+                    <binding>
+                        <QueryBinding>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                select
+                                    a.slug as "slug",
+                                    a.title as "title",
+                                    a.description as "description",
+                                    cast(a.created_at as varchar) as "created_at",
+                                    u.username as "username",
+                                    (select count(*) from favorites f where f.article_id = a.id) as "favorites_count",
+                                    exists(
+                                        select 1 from favorites f
+                                        where f.article_id = a.id and f.user_id = :currentUserId
+                                    ) as "favorited",
+                                    coalesce((
+                                        select listagg(t.name, ',') within group (order by t.name)
+                                        from article_tags at
+                                        join tags t on t.id = at.tag_id
+                                        where at.article_id = a.id
+                                    ), '') as "tags"
+                                from articles a
+                                join users u on u.id = a.author_id
+                                where u.username = :username
+                                order by a.created_at desc, a.id desc
+                            ]]></sql>
+                        </QueryBinding>
+                    </binding>
+                    <output><JSONOutput /></output>
+                </SelectService>
+            </entry>
+            <entry>
+                <string>/services/profile</string>
+                <SelectService>
+                    <parameters>
+                        <list>
+                            <PathVariable><path>/services/profile/{username}</path></PathVariable>
+                            <SessionParameter>
+                                <name>currentUserId</name>
+                                <sessionKey>currentUserId</sessionKey>
+                                <defaultValue>0</defaultValue>
+                            </SessionParameter>
+                        </list>
+                    </parameters>
+                    <binding>
+                        <QueryBinding>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                select
+                                    u.id as "id",
+                                    u.username as "username",
+                                    u.bio as "bio",
+                                    u.image as "image",
+                                    exists(
+                                        select 1 from follows f
+                                        where f.follower_id = :currentUserId and f.followed_id = u.id
+                                    ) as "following"
+                                from users u
+                                where u.username = :username
+                            ]]></sql>
+                        </QueryBinding>
+                    </binding>
+                    <output><JSONOutput /></output>
+                </SelectService>
+            </entry>
+        </map>
+    </routes>
+</RoutedService>
