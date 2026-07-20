@@ -27,6 +27,18 @@
                                 <redirect>/views/article/{slug}</redirect>
                             </verb>
                             <verb>
+                                <name>favorite</name>
+                                <service>/api/articles/{slug}/favorite</service>
+                                <method>POST</method>
+                                <redirect>/views/article/{slug}</redirect>
+                            </verb>
+                            <verb>
+                                <name>unfavorite</name>
+                                <service>/api/articles/{slug}/favorite</service>
+                                <method>DELETE</method>
+                                <redirect>/views/article/{slug}</redirect>
+                            </verb>
+                            <verb>
                                 <name>delete-comment</name>
                                 <service>/api/articles/{slug}/comments/{commentId}</service>
                                 <method>DELETE</method>

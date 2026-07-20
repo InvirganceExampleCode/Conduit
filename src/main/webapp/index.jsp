@@ -43,7 +43,15 @@
                             <a class="author" href="#profile">${virge:html(article.username)}</a>
                             <time>${virge:html(article.created_at)}</time>
                         </div>
-                        <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
+                        <virge:if test="${empty sessionScope.currentUserId}">
+                            <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
+                        </virge:if>
+                        <virge:if test="${not empty sessionScope.currentUserId}">
+                            <form method="post" action="${root}/views/favorite/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" class="favorite-form">
+                                <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+                                <button type="submit" class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</button>
+                            </form>
+                        </virge:if>
                     </div>
                     <a class="article-link" href="${root}/views/article/${virge:urlparam(article.slug)}">
                         <h3>${virge:html(article.title)}</h3>
@@ -68,7 +76,7 @@
         <aside class="sidebar">
             <h2>Skeleton status</h2>
             <p>The database, service pipeline, pagination, JSON output, and JSP rendering are active.</p>
-            <p>Authentication is active. Article detail and mutation services are the next vertical slice.</p>
+            <p>Authentication, article publishing, comments, and favorites are active.</p>
         </aside>
     </main>
 <jsp:include page="/include/footer.jsp" />

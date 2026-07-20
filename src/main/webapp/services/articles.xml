@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PaginatedTableService>
     <pageSize>20</pageSize>
+    <parameters>
+        <list>
+            <SessionParameter>
+                <name>currentUserId</name>
+                <sessionKey>currentUserId</sessionKey>
+                <defaultValue>0</defaultValue>
+            </SessionParameter>
+        </list>
+    </parameters>
     <page>
         <RequestParameter>
             <name>page</name>
@@ -24,7 +33,7 @@
             <defaultValue>true</defaultValue>
         </RequestParameter>
     </sortDirection>
-    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, tags</columns>
+    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, tags</columns>
     <searchKeys>title, description, username</searchKeys>
     <primaryKey>id</primaryKey>
     <jndiName>jdbc/conduit</jndiName>
@@ -40,6 +49,10 @@
             u.bio as bio,
             u.image as image,
             (select count(*) from favorites f where f.article_id = a.id) as favorites_count,
+            exists(
+                select 1 from favorites f
+                where f.article_id = a.id and f.user_id = :currentUserId
+            ) as favorited,
             coalesce((
                 select listagg(t.name, ',') within group (order by t.name)
                 from article_tags at

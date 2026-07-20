@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HypermediaService>
+    <parameters>
+        <list>
+            <PathVariable><path>/views/favorite/{slug}/*</path></PathVariable>
+        </list>
+    </parameters>
+    <verbs>
+        <list>
+            <verb>
+                <name>favorite</name>
+                <service>/api/articles/{slug}/favorite</service>
+                <method>POST</method>
+                <redirect>/</redirect>
+            </verb>
+            <verb>
+                <name>unfavorite</name>
+                <service>/api/articles/{slug}/favorite</service>
+                <method>DELETE</method>
+                <redirect>/</redirect>
+            </verb>
+        </list>
+    </verbs>
+</HypermediaService>

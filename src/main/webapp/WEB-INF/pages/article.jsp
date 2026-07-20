@@ -25,7 +25,15 @@
                         <span class="article-author">${virge:html(article.username)}</span>
                         <time>${virge:html(article.created_at)}</time>
                     </div>
-                    <span class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</span>
+                    <virge:if test="${empty sessionScope.currentUserId}">
+                        <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
+                    </virge:if>
+                    <virge:if test="${not empty sessionScope.currentUserId}">
+                        <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" class="favorite-form">
+                            <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+                            <button type="submit" class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</button>
+                        </form>
+                    </virge:if>
                     <virge:if test="${sessionScope.currentUserId eq article.author_id}">
                         <span class="owner-actions">
                             <a href="${root}/views/editor/${virge:urlparam(article.slug)}/edit">Edit article</a>

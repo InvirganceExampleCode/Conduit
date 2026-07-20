@@ -47,6 +47,9 @@ button:hover, .button:hover { background: var(--green-dark); }
 .avatar { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--green); font-weight: 700; text-transform: uppercase; }
 .author { color: var(--green); text-decoration: none; }
 .favorites { margin-left: auto; padding: .15rem .5rem; border: 1px solid var(--green); border-radius: .2rem; color: var(--green); }
+.favorite-form { margin-left: auto; }
+.favorite-form .favorites { margin-left: 0; background: transparent; }
+.favorite-form .favorites:hover { color: white; background: var(--green); }
 .article-link { display: block; margin-top: .8rem; text-decoration: none; }
 .article-link h3 { margin: 0; font-size: 1.45rem; }
 .article-link p { margin: .2rem 0 1rem; color: var(--muted); }

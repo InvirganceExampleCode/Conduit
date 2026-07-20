@@ -3,6 +3,44 @@
     <routes>
         <map>
             <entry>
+                <string>/api/articles/*/favorite</string>
+                <RESTService>
+                    <POST>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/articles/{slug}/favorite</path></PathVariable>
+                                    <SessionParameter><name>userId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                merge into favorites (user_id, article_id) key(user_id, article_id)
+                                select :userId, a.id from articles a where a.slug = :slug
+                            ]]></sql>
+                        </UpdateService>
+                    </POST>
+                    <DELETE>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/articles/{slug}/favorite</path></PathVariable>
+                                    <SessionParameter><name>userId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                delete from favorites
+                                where user_id = :userId
+                                  and article_id = (select id from articles where slug = :slug)
+                            ]]></sql>
+                        </UpdateService>
+                    </DELETE>
+                </RESTService>
+            </entry>
+            <entry>
                 <string>/api/articles/*/comments</string>
                 <RESTService>
                     <POST>
