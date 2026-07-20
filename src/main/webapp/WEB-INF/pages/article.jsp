@@ -28,8 +28,11 @@
                     <span class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</span>
                     <virge:if test="${sessionScope.currentUserId eq article.author_id}">
                         <span class="owner-actions">
-                            <a href="${root}/views/article/${virge:urlparam(article.slug)}/edit">Edit article</a>
-                            <span title="Delete will be enabled with the mutation slice">Delete article</span>
+                            <a href="${root}/views/editor/${virge:urlparam(article.slug)}/edit">Edit article</a>
+                            <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/delete" class="inline-form">
+                                <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+                                <button type="submit" class="link-button danger-link">Delete article</button>
+                            </form>
                         </span>
                     </virge:if>
                 </div>

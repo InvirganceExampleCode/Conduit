@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoutedService>
+    <routes>
+        <map>
+            <entry>
+                <string>/api/articles/create</string>
+                <RESTService>
+                    <POST>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <GeneratedSlugParameter />
+                                    <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <RequestParameter><name>title</name></RequestParameter>
+                                    <RequestParameter><name>description</name></RequestParameter>
+                                    <RequestParameter><name>body</name></RequestParameter>
+                                    <CsrfParameter />
+                                    <ArticleTagsParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                insert into articles (id, author_id, slug, title, description, body)
+                                values (next value for conduit_ids, :authorId, :slug, :title, :description, :body)
+                            ]]></sql>
+                            <children>
+                                <map>
+                                    <entry>
+                                        <string>tagList</string>
+                                        <string><![CDATA[
+                                            merge into article_tags (article_id, tag_id) key(article_id, tag_id)
+                                            select a.id, t.id
+                                            from articles a,
+                                            final table (
+                                                merge into tags t
+                                                using (values(cast(:tagName as varchar))) s(name)
+                                                on t.name = s.name
+                                                when matched then update set name = t.name
+                                                when not matched then insert (id, name) values (next value for conduit_ids, s.name)
+                                            ) t
+                                            where a.slug = :slug
+                                        ]]></string>
+                                    </entry>
+                                </map>
+                            </children>
+                        </UpdateService>
+                    </POST>
+                </RESTService>
+            </entry>
+            <entry>
+                <string>/api/articles/*</string>
+                <RESTService>
+                    <PUT>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/articles/{slug}</path></PathVariable>
+                                    <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <RequestParameter><name>title</name></RequestParameter>
+                                    <RequestParameter><name>description</name></RequestParameter>
+                                    <RequestParameter><name>body</name></RequestParameter>
+                                    <CsrfParameter />
+                                    <ArticleTagsParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <statements>
+                                <list>
+                                    <string><![CDATA[
+                                        update articles
+                                        set title = :title, description = :description, body = :body, updated_at = current_timestamp
+                                        where slug = :slug and author_id = :authorId
+                                    ]]></string>
+                                    <string><![CDATA[
+                                        delete from article_tags
+                                        where article_id = (select id from articles where slug = :slug and author_id = :authorId)
+                                    ]]></string>
+                                </list>
+                            </statements>
+                            <children>
+                                <map>
+                                    <entry>
+                                        <string>tagList</string>
+                                        <string><![CDATA[
+                                            merge into article_tags (article_id, tag_id) key(article_id, tag_id)
+                                            select a.id, t.id
+                                            from articles a,
+                                            final table (
+                                                merge into tags t
+                                                using (values(cast(:tagName as varchar))) s(name)
+                                                on t.name = s.name
+                                                when matched then update set name = t.name
+                                                when not matched then insert (id, name) values (next value for conduit_ids, s.name)
+                                            ) t
+                                            where a.slug = :slug and a.author_id = :authorId
+                                        ]]></string>
+                                    </entry>
+                                </map>
+                            </children>
+                        </UpdateService>
+                    </PUT>
+                    <DELETE>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/articles/{slug}</path></PathVariable>
+                                    <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql>delete from articles where slug = :slug and author_id = :authorId</sql>
+                        </UpdateService>
+                    </DELETE>
+                </RESTService>
+            </entry>
+        </map>
+    </routes>
+</RoutedService>

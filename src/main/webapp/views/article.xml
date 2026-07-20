@@ -11,9 +11,18 @@
                         </list>
                     </parameters>
                     <page>/WEB-INF/pages/article.jsp</page>
+                    <verbs>
+                        <list>
+                            <verb>
+                                <name>delete</name>
+                                <service>/api/articles/{slug}</service>
+                                <method>DELETE</method>
+                                <redirect>/</redirect>
+                            </verb>
+                        </list>
+                    </verbs>
                 </HypermediaService>
             </entry>
         </map>
     </routes>
 </RoutedService>
-

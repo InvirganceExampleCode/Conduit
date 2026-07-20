@@ -32,6 +32,9 @@
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/auth/settings</url-pattern>
+        <url-pattern>/views/editor/*</url-pattern>
+        <url-pattern>/api/articles</url-pattern>
+        <url-pattern>/api/articles/*</url-pattern>
     </filter-mapping>
 
     <session-config>

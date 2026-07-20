@@ -13,6 +13,7 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Server-rendered global feed at `/`
 - Hypermedia article detail pages with author, tags, favorite metadata, and comments
 - Safe server-side CommonMark rendering for article bodies
+- Authenticated article creation, editing, deletion, and transactional tag updates
 - Registration, login, logout, CSRF protection, and session-backed identity
 - Protected account settings page
 - Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services
