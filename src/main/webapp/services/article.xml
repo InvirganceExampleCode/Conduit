@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoutedService>
+    <routes>
+        <map>
+            <entry>
+                <string>/services/article</string>
+                <SelectService>
+                    <parameters>
+                        <list>
+                            <PathVariable><path>/services/article/{slug}</path></PathVariable>
+                            <SessionParameter>
+                                <name>currentUserId</name>
+                                <sessionKey>currentUserId</sessionKey>
+                                <defaultValue>0</defaultValue>
+                            </SessionParameter>
+                        </list>
+                    </parameters>
+                    <binding>
+                        <QueryBinding>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                select
+                                    a.id as "id",
+                                    a.author_id as "author_id",
+                                    a.slug as "slug",
+                                    a.title as "title",
+                                    a.description as "description",
+                                    cast(a.body as varchar) as "body",
+                                    cast(a.created_at as varchar) as "created_at",
+                                    cast(a.updated_at as varchar) as "updated_at",
+                                    u.username as "username",
+                                    u.bio as "bio",
+                                    u.image as "image",
+                                    (select count(*) from favorites f where f.article_id = a.id) as "favorites_count",
+                                    exists(
+                                        select 1 from favorites f
+                                        where f.article_id = a.id and f.user_id = :currentUserId
+                                    ) as "favorited",
+                                    coalesce((
+                                        select listagg(t.name, ',') within group (order by t.name)
+                                        from article_tags at
+                                        join tags t on t.id = at.tag_id
+                                        where at.article_id = a.id
+                                    ), '') as "tags"
+                                from articles a
+                                join users u on u.id = a.author_id
+                                where a.slug = :slug
+                            ]]></sql>
+                        </QueryBinding>
+                    </binding>
+                    <transformers>
+                        <list>
+                            <MarkdownTransformer>
+                                <input>body</input>
+                                <output>bodyHtml</output>
+                            </MarkdownTransformer>
+                        </list>
+                    </transformers>
+                    <output><JSONOutput /></output>
+                </SelectService>
+            </entry>
+            <entry>
+                <string>/services/article/*/comments</string>
+                <SelectService>
+                    <parameters>
+                        <list>
+                            <PathVariable><path>/services/article/{slug}/comments</path></PathVariable>
+                        </list>
+                    </parameters>
+                    <binding>
+                        <QueryBinding>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                select
+                                    c.id as "id",
+                                    c.author_id as "author_id",
+                                    c.body as "body",
+                                    cast(c.created_at as varchar) as "created_at",
+                                    cast(c.updated_at as varchar) as "updated_at",
+                                    u.username as "username",
+                                    u.bio as "bio",
+                                    u.image as "image"
+                                from comments c
+                                join articles a on a.id = c.article_id
+                                join users u on u.id = c.author_id
+                                where a.slug = :slug
+                                order by c.created_at, c.id
+                            ]]></sql>
+                        </QueryBinding>
+                    </binding>
+                    <output><JSONOutput /></output>
+                </SelectService>
+            </entry>
+        </map>
+    </routes>
+</RoutedService>

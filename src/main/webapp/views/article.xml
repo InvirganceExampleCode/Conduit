@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoutedService>
+    <routes>
+        <map>
+            <entry>
+                <string>/views/article</string>
+                <HypermediaService>
+                    <parameters>
+                        <list>
+                            <PathVariable><path>/views/article/{slug}</path></PathVariable>
+                        </list>
+                    </parameters>
+                    <page>/WEB-INF/pages/article.jsp</page>
+                </HypermediaService>
+            </entry>
+        </map>
+    </routes>
+</RoutedService>
+

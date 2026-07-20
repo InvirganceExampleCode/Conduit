@@ -52,6 +52,27 @@ button:hover, .button:hover { background: var(--green-dark); }
 .article-link p { margin: .2rem 0 1rem; color: var(--muted); }
 .article-link span, .tags { color: #aaa; font-size: .8rem; }
 .tags { text-align: right; }
+.article-hero { padding: 2rem 0; color: white; background: #333; }
+.article-hero h1 { margin: 0 0 1.5rem; font-size: clamp(2rem, 6vw, 2.8rem); line-height: 1.15; }
+.article-hero-meta { color: #bbb; }
+.article-author { color: white; }
+.owner-actions { display: flex; gap: .75rem; margin-left: 1rem; }
+.owner-actions a { color: white; }
+.owner-actions span { color: #bbb; }
+.article-content { padding-block: 2.5rem; border-bottom: 1px solid var(--line); }
+.article-description { color: var(--muted); font-size: 1.1rem; }
+.article-body { min-height: 8rem; font-family: Georgia, serif; font-size: 1.15rem; line-height: 1.8; }
+.markdown > :first-child { margin-top: 0; }
+.markdown > :last-child { margin-bottom: 0; }
+.markdown pre { overflow-x: auto; padding: 1rem; border-radius: .25rem; background: var(--wash); }
+.markdown code { padding: .1rem .25rem; border-radius: .2rem; background: var(--wash); font-family: Consolas, monospace; }
+.markdown pre code { padding: 0; background: transparent; }
+.markdown blockquote { margin-inline: 0; padding-left: 1rem; border-left: 4px solid var(--line); color: var(--muted); }
+.markdown img { max-width: 100%; }
+.comments { max-width: 760px; padding-block: 2rem; }
+.comment { margin: 1rem 0; border: 1px solid var(--line); border-radius: .25rem; }
+.comment p { margin: 0; padding: 1rem; }
+.comment footer { padding: .6rem 1rem; color: var(--muted); background: var(--wash); font-size: .85rem; }
 .sidebar { align-self: start; padding: .75rem 1rem; border-radius: .25rem; background: var(--wash); font-size: .9rem; }
 .sidebar h2 { font-size: 1rem; }
 .pagination { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; }

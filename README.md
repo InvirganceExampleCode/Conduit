@@ -11,6 +11,8 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Bound search parameter and configured-column sort whitelist
 - `/services/articles` JSON records and `/services/articles/count` summary
 - Server-rendered global feed at `/`
+- Hypermedia article detail pages with author, tags, favorite metadata, and comments
+- Safe server-side CommonMark rendering for article bodies
 - Registration, login, logout, CSRF protection, and session-backed identity
 - Protected account settings page
 - Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services

@@ -45,7 +45,7 @@
                         </div>
                         <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
                     </div>
-                    <a class="article-link" href="#article-${virge:urlparam(article.slug)}">
+                    <a class="article-link" href="${root}/views/article/${virge:urlparam(article.slug)}">
                         <h3>${virge:html(article.title)}</h3>
                         <p>${virge:html(article.description)}</p>
                         <span>Read more…</span>
