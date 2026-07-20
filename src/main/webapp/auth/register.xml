@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HypermediaService>
+    <page>/WEB-INF/pages/register.jsp</page>
+    <verbs>
+        <list>
+            <verb>
+                <name>register</name>
+                <page>/WEB-INF/pages/register.jsp</page>
+                <service>/api/users</service>
+                <method>POST</method>
+                <redirect>/</redirect>
+            </verb>
+        </list>
+    </verbs>
+</HypermediaService>
+

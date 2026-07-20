@@ -1,4 +1,4 @@
-package com.invirgance.example.conduit.service;
+package com.invirgance.conduit.service;
 
 import com.invirgance.convirgance.ConvirganceException;
 import org.junit.jupiter.api.Test;
@@ -38,4 +38,3 @@ class PaginatedTableServiceTest
         return service;
     }
 }
-

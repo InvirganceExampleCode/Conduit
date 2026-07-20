@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HypermediaService>
+    <page>/WEB-INF/pages/login.jsp</page>
+    <verbs>
+        <list>
+            <verb>
+                <name>login</name>
+                <page>/WEB-INF/pages/login.jsp</page>
+                <service>/api/session</service>
+                <method>POST</method>
+                <redirect>/{redirect}</redirect>
+            </verb>
+        </list>
+    </verbs>
+</HypermediaService>

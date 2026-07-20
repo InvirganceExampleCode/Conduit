@@ -20,9 +20,15 @@ body {
 a { color: inherit; }
 .container { width: min(1110px, calc(100% - 2rem)); margin-inline: auto; }
 .site-header { padding: .75rem 0; }
+.site-footer { margin-top: 3rem; padding: 1.5rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+.site-footer .container { display: flex; align-items: center; gap: 1rem; }
+.site-footer .brand { font-size: 1rem; }
 .nav { display: flex; align-items: center; justify-content: space-between; }
 .brand { color: var(--green); font-size: 1.55rem; font-weight: 700; text-decoration: none; }
 .nav-links { display: flex; gap: 1rem; color: var(--muted); }
+.nav-form { display: inline; }
+.link-button { border: 0; padding: 0; color: var(--muted); background: transparent; }
+.link-button:hover { color: var(--ink); background: transparent; }
 .nav-links a { text-decoration: none; }
 .nav-links [aria-current="page"] { color: var(--ink); }
 .hero { padding: 2rem 0; color: white; background: var(--green); text-align: center; box-shadow: inset 0 -8px 18px rgb(0 0 0 / 8%); }
@@ -52,6 +58,18 @@ button:hover, .button:hover { background: var(--green-dark); }
 .pagination a { color: var(--green); }
 .pagination .disabled { pointer-events: none; color: #bbb; text-decoration: none; }
 .error-page { max-width: 640px; padding-top: 15vh; text-align: center; }
+.auth-page { width: min(540px, calc(100% - 2rem)); margin: 3rem auto; text-align: center; }
+.auth-page h1 { margin-bottom: 0; font-weight: 500; }
+.auth-page a { color: var(--green); }
+.auth-form { display: grid; gap: 1rem; margin-top: 1.5rem; text-align: left; }
+.auth-form label { display: grid; gap: .35rem; color: var(--muted); }
+.auth-form input { width: 100%; padding: .75rem; color: var(--ink); }
+.auth-form button { justify-self: end; padding-inline: 1.25rem; }
+.form-error { margin: 1rem 0; padding: .75rem; border: 1px solid #d9534f; border-radius: .25rem; color: #a94442; background: #f2dede; }
+.account-summary { display: grid; grid-template-columns: 1fr 2fr; text-align: left; border-block: 1px solid var(--line); padding-block: 1rem; }
+.account-summary dt { font-weight: 700; }
+.account-summary dd { margin: 0; }
+.danger-button { border-color: #d9534f; background: #d9534f; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 @media (max-width: 760px) {
@@ -59,4 +77,3 @@ button:hover, .button:hover { background: var(--green-dark); }
     .feed-tabs { align-items: stretch; flex-direction: column; padding-bottom: .75rem; }
     .search-form input { min-width: 0; flex: 1; }
 }
-

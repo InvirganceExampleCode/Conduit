@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RESTService>
+    <POST>
+        <InsertService>
+            <origin>
+                <RequestBodyOrigin />
+            </origin>
+            <input>
+                <JSONInput />
+            </input>
+            <transformers>
+                <list>
+                    <CsrfValidationTransformer />
+                    <NotBlankValidation><key>username</key></NotBlankValidation>
+                    <SizeValidation><key>username</key><min>3</min><max>32</max></SizeValidation>
+                    <RegExValidation><key>username</key><regex>[A-Za-z0-9_]+</regex></RegExValidation>
+                    <NotBlankValidation><key>email</key></NotBlankValidation>
+                    <RegExValidation><key>email</key><regex>[^@\s]+@[^@\s]+\.[^@\s]+</regex></RegExValidation>
+                    <NotBlankValidation><key>password</key></NotBlankValidation>
+                    <SizeValidation><key>password</key><min>8</min></SizeValidation>
+                    <PasswordHashTransformer />
+                </list>
+            </transformers>
+            <consumer>
+                <AuthenticatedConsumer>
+                    <consumer>
+                        <QueryConsumer>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                insert into users (id, email, username, password_hash)
+                                values (:id, :email, :username, :passwordHash)
+                            ]]></sql>
+                            <sequenceSql>select next value for conduit_ids</sequenceSql>
+                            <sequenceId>id</sequenceId>
+                        </QueryConsumer>
+                    </consumer>
+                </AuthenticatedConsumer>
+            </consumer>
+            <output>
+                <JSONOutput />
+            </output>
+        </InsertService>
+    </POST>
+</RESTService>
+

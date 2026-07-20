@@ -19,6 +19,21 @@
         <url-pattern>/views/*</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>ServicesServlet</servlet-name>
+        <url-pattern>/auth/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.invirgance.conduit.auth.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/auth/settings</url-pattern>
+    </filter-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
         <cookie-config>
@@ -34,4 +49,3 @@
         <location>/error.jsp</location>
     </error-page>
 </web-app>
-

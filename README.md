@@ -11,8 +11,11 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Bound search parameter and configured-column sort whitelist
 - `/services/articles` JSON records and `/services/articles/count` summary
 - Server-rendered global feed at `/`
+- Registration, login, logout, CSRF protection, and session-backed identity
+- Protected account settings page
+- Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services
 
-Authentication, mutations, article detail pages, comments, favorites, follows, and profiles are intentionally left for subsequent vertical slices.
+Article mutations, article detail pages, comments, favorites, follows, and profiles are intentionally left for subsequent vertical slices.
 
 ## Build and run
 
@@ -38,7 +41,10 @@ The in-memory database and development-only password placeholders are deliberate
 src/main/java/                       custom Convirgance components
 src/main/resources/application.properties
 src/main/resources/sql/init/        schema and development seed data
+src/main/webapp/auth/                hypermedia page/action services
+src/main/webapp/api/                 user and session API services
 src/main/webapp/services/            Wiring service definitions
 src/main/webapp/                     JSP pages and static resources
 ```
 
+Authentication routing, validation, SQL, transactions, rendering, and redirects are composed with Convirgance Web Services. Java code is organized under `com.invirgance.conduit`, with authentication components separated into binding, consumer, filter, service, session, and transformer packages.

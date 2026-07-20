@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RESTService>
+    <POST>
+        <SelectService>
+            <parameters>
+                <list>
+                    <RequestParameter><name>email</name></RequestParameter>
+                    <RequestParameter><name>password</name></RequestParameter>
+                    <RequestParameter><name>csrf</name></RequestParameter>
+                </list>
+            </parameters>
+            <binding>
+                <AuthenticationBinding>
+                    <binding>
+                        <QueryBinding>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                select
+                                    id as "id",
+                                    username as "username",
+                                    email as "email",
+                                    password_hash as "passwordHash",
+                                    bio as "bio",
+                                    image as "image"
+                                from users
+                                where lower(email) = lower(:email)
+                            ]]></sql>
+                        </QueryBinding>
+                    </binding>
+                </AuthenticationBinding>
+            </binding>
+            <transformers>
+                <list>
+                    <SessionIdentityTransformer />
+                </list>
+            </transformers>
+            <output>
+                <JSONOutput />
+            </output>
+        </SelectService>
+    </POST>
+    <DELETE>
+        <LogoutService />
+    </DELETE>
+</RESTService>

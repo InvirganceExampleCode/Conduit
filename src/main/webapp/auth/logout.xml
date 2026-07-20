@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HypermediaService>
+    <verbs>
+        <list>
+            <verb>
+                <name>logout</name>
+                <service>/api/session</service>
+                <method>DELETE</method>
+                <redirect>/</redirect>
+            </verb>
+        </list>
+    </verbs>
+</HypermediaService>
+

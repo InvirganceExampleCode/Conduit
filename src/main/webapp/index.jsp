@@ -1,24 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Conduit</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/conduit.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="container nav" aria-label="Primary navigation">
-            <a class="brand" href="${pageContext.request.contextPath}/">conduit</a>
-            <div class="nav-links">
-                <a aria-current="page" href="${pageContext.request.contextPath}/">Home</a>
-                <a href="#signin" aria-disabled="true">Sign in</a>
-                <a href="#register" aria-disabled="true">Sign up</a>
-            </div>
-        </nav>
-    </header>
+<virge:set var="pageTitle" value="Conduit" scope="request" />
+<jsp:include page="/include/header.jsp" />
 
     <section class="hero">
         <div class="container">
@@ -85,9 +68,7 @@
         <aside class="sidebar">
             <h2>Skeleton status</h2>
             <p>The database, service pipeline, pagination, JSON output, and JSP rendering are active.</p>
-            <p>Authentication and article mutations are the next vertical slice.</p>
+            <p>Authentication is active. Article detail and mutation services are the next vertical slice.</p>
         </aside>
     </main>
-</body>
-</html>
-
+<jsp:include page="/include/footer.jsp" />

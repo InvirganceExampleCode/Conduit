@@ -1,4 +1,4 @@
-package com.invirgance.example.conduit.service;
+package com.invirgance.conduit.service;
 
 import com.invirgance.convirgance.ConvirganceException;
 import com.invirgance.convirgance.dbms.DBMS;

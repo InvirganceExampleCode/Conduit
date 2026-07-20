@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.invirgance.example</groupId>
+    <groupId>com.invirgance</groupId>
     <artifactId>realworld-conduit</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -38,6 +38,11 @@
             <groupId>com.invirgance</groupId>
             <artifactId>convirgance-jdbc</artifactId>
             <version>${convirgance.jdbc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -83,4 +88,3 @@
         </plugins>
     </build>
 </project>
-
