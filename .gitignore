@@ -1,0 +1,8 @@
+target/
+.virge/
+.idea/
+.vscode/
+*.iml
+
+# Local reference material is not part of the application.
+.reference-petclinic/
