@@ -8,6 +8,7 @@
                     <parameters>
                         <list>
                             <PathVariable><path>/views/article/{slug}</path></PathVariable>
+                            <PathVariable><path>/views/article/*/comments/{commentId}/delete-comment</path></PathVariable>
                         </list>
                     </parameters>
                     <page>/WEB-INF/pages/article.jsp</page>
@@ -18,6 +19,18 @@
                                 <service>/api/articles/{slug}</service>
                                 <method>DELETE</method>
                                 <redirect>/</redirect>
+                            </verb>
+                            <verb>
+                                <name>comment</name>
+                                <service>/api/articles/{slug}/comments</service>
+                                <method>POST</method>
+                                <redirect>/views/article/{slug}</redirect>
+                            </verb>
+                            <verb>
+                                <name>delete-comment</name>
+                                <service>/api/articles/{slug}/comments/{commentId}</service>
+                                <method>DELETE</method>
+                                <redirect>/views/article/{slug}</redirect>
                             </verb>
                         </list>
                     </verbs>

@@ -14,11 +14,12 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Hypermedia article detail pages with author, tags, favorite metadata, and comments
 - Safe server-side CommonMark rendering for article bodies
 - Authenticated article creation, editing, deletion, and transactional tag updates
+- Authenticated comment creation and owner-only deletion
 - Registration, login, logout, CSRF protection, and session-backed identity
 - Protected account settings page
 - Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services
 
-Article mutations, article detail pages, comments, favorites, follows, and profiles are intentionally left for subsequent vertical slices.
+Favorites, follows, and profiles are intentionally left for subsequent vertical slices.
 
 ## Build and run
 

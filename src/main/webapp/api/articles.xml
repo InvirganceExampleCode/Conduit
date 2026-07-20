@@ -3,6 +3,54 @@
     <routes>
         <map>
             <entry>
+                <string>/api/articles/*/comments</string>
+                <RESTService>
+                    <POST>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/articles/{slug}/comments</path></PathVariable>
+                                    <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <RequestParameter><name>body</name></RequestParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                insert into comments (id, article_id, author_id, body)
+                                select next value for conduit_ids, a.id, :authorId, :body
+                                from articles a
+                                where a.slug = :slug and length(trim(:body)) > 0
+                            ]]></sql>
+                        </UpdateService>
+                    </POST>
+                </RESTService>
+            </entry>
+            <entry>
+                <string>/api/articles/*/comments/*</string>
+                <RESTService>
+                    <DELETE>
+                        <UpdateService>
+                            <parameters>
+                                <list>
+                                    <PathVariable><path>/api/articles/{slug}/comments/*</path></PathVariable>
+                                    <PathVariable><path>/api/articles/*/comments/{commentId}</path></PathVariable>
+                                    <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                                    <CsrfParameter />
+                                </list>
+                            </parameters>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                delete from comments
+                                where id = :commentId
+                                  and author_id = :authorId
+                                  and article_id = (select id from articles where slug = :slug)
+                            ]]></sql>
+                        </UpdateService>
+                    </DELETE>
+                </RESTService>
+            </entry>
+            <entry>
                 <string>/api/articles/create</string>
                 <RESTService>
                     <POST>

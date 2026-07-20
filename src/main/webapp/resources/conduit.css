@@ -79,9 +79,13 @@ button:hover, .button:hover { background: var(--green-dark); }
 .markdown blockquote { margin-inline: 0; padding-left: 1rem; border-left: 4px solid var(--line); color: var(--muted); }
 .markdown img { max-width: 100%; }
 .comments { max-width: 760px; padding-block: 2rem; }
+.comment-form { display: grid; gap: .75rem; margin: 1rem 0 2rem; }
+.comment-form textarea { width: 100%; padding: .75rem; color: var(--ink); font: inherit; resize: vertical; }
+.comment-form button { justify-self: end; }
 .comment { margin: 1rem 0; border: 1px solid var(--line); border-radius: .25rem; }
 .comment p { margin: 0; padding: 1rem; }
 .comment footer { padding: .6rem 1rem; color: var(--muted); background: var(--wash); font-size: .85rem; }
+.comment footer .inline-form { margin-left: .5rem; }
 .sidebar { align-self: start; padding: .75rem 1rem; border-radius: .25rem; background: var(--wash); font-size: .9rem; }
 .sidebar h2 { font-size: 1rem; }
 .pagination { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; }

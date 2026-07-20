@@ -51,10 +51,26 @@
         <virge:if test="${empty sessionScope.currentUserId}">
             <p><a href="${root}/auth/login">Sign in</a> to add a comment.</p>
         </virge:if>
+        <virge:if test="${not empty sessionScope.currentUserId}">
+            <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/comment" class="comment-form">
+                <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+                <label for="comment-body">Add a comment</label>
+                <textarea id="comment-body" name="body" rows="4" maxlength="4000" required></textarea>
+                <button type="submit">Post comment</button>
+            </form>
+        </virge:if>
         <virge:iterate var="comment" items="${comments}">
             <article class="comment">
                 <p>${virge:html(comment.body)}</p>
-                <footer>${virge:html(comment.username)} · ${virge:html(comment.created_at)}</footer>
+                <footer>
+                    ${virge:html(comment.username)} · ${virge:html(comment.created_at)}
+                    <virge:if test="${sessionScope.currentUserId eq comment.author_id}">
+                        <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/comments/${comment.id}/delete-comment" class="inline-form">
+                            <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+                            <button type="submit" class="link-button danger-link">Delete</button>
+                        </form>
+                    </virge:if>
+                </footer>
             </article>
         </virge:iterate>
     </section>
