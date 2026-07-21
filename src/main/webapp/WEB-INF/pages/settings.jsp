@@ -21,10 +21,7 @@
                 Bio
                 <textarea name="bio" rows="4" maxlength="1024">${virge:html(sessionScope.currentBio)}</textarea>
             </label>
-            <label>
-                Profile image URL
-                <input type="url" name="image" value="${virge:html(sessionScope.currentImage)}" maxlength="2048" autocomplete="url">
-            </label>
+            <p class="field-help">Your profile image is provided by <a href="https://gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a> using your email address.</p>
             <label>
                 New password
                 <input type="password" name="password" minlength="8" autocomplete="new-password" aria-describedby="password-help">

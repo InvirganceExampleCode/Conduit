@@ -17,7 +17,7 @@
 <virge:if test="${not empty profile}">
     <header class="profile-hero">
         <div class="container profile-summary">
-            <div class="avatar profile-avatar" aria-hidden="true">${virge:html(profile.username.substring(0, 1))}</div>
+            <img class="avatar profile-avatar" src="${virge:html(profile.image)}" alt="">
             <h1>${virge:html(profile.username)}</h1>
             <p>${virge:html(profile.bio)}</p>
             <virge:if test="${not empty sessionScope.currentUserId and sessionScope.currentUserId ne profile.id}">
@@ -38,7 +38,7 @@
         <virge:iterate var="article" items="${articles}">
             <article class="article-preview">
                 <div class="article-meta">
-                    <div class="avatar" aria-hidden="true">${virge:html(article.username.substring(0, 1))}</div>
+                    <img class="avatar" src="${virge:html(article.image)}" alt="">
                     <div>
                         <span class="author">${virge:html(article.username)}</span>
                         <time>${virge:html(article.created_at)}</time>

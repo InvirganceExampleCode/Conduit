@@ -46,7 +46,7 @@ button:hover, .button:hover { background: var(--green-dark); }
 .article-preview { padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
 .article-meta { display: flex; align-items: center; gap: .6rem; color: var(--muted); font-size: .85rem; }
 .article-meta time { display: block; }
-.avatar { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--green); font-weight: 700; text-transform: uppercase; }
+.avatar { width: 2rem; height: 2rem; border-radius: 50%; display: block; object-fit: cover; color: white; background: var(--green); }
 .author { color: var(--green); text-decoration: none; }
 .favorites { margin-left: auto; padding: .15rem .5rem; border: 1px solid var(--green); border-radius: .2rem; color: var(--green); }
 .favorite-form { margin-left: auto; }
@@ -116,6 +116,8 @@ button:hover, .button:hover { background: var(--green-dark); }
 .auth-form label { display: grid; gap: .35rem; color: var(--muted); }
 .auth-form input, .auth-form textarea { width: 100%; padding: .75rem; color: var(--ink); font: inherit; }
 .auth-form textarea { resize: vertical; }
+.field-help { margin: 0; color: var(--muted); text-align: left; }
+.field-help a { color: var(--green); }
 .auth-form button { justify-self: end; padding-inline: 1.25rem; }
 .form-error { margin: 1rem 0; padding: .75rem; border: 1px solid #d9534f; border-radius: .25rem; color: #a94442; background: #f2dede; }
 .form-success { margin: 1rem 0; padding: .75rem; border: 1px solid var(--green); border-radius: .25rem; color: var(--green-dark); background: #edf8ed; }

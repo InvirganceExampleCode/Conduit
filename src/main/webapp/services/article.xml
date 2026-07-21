@@ -30,7 +30,7 @@
                                     cast(a.updated_at as varchar) as "updated_at",
                                     u.username as "username",
                                     u.bio as "bio",
-                                    u.image as "image",
+                                    'https://www.gravatar.com/avatar/' || lower(rawtohex(hash('MD5', stringtoutf8(lower(trim(u.email)))))) || '?d=identicon&s=80' as "image",
                                     (select count(*) from favorites f where f.article_id = a.id) as "favorites_count",
                                     exists(
                                         select 1 from favorites f
@@ -79,7 +79,7 @@
                                     cast(c.updated_at as varchar) as "updated_at",
                                     u.username as "username",
                                     u.bio as "bio",
-                                    u.image as "image"
+                                    'https://www.gravatar.com/avatar/' || lower(rawtohex(hash('MD5', stringtoutf8(lower(trim(u.email)))))) || '?d=identicon&s=80' as "image"
                                 from comments c
                                 join articles a on a.id = c.article_id
                                 join users u on u.id = c.author_id

@@ -52,7 +52,7 @@
             <virge:iterate var="article" items="${articles}">
                 <article class="article-preview">
                     <div class="article-meta">
-                        <div class="avatar" aria-hidden="true">${virge:html(article.username.substring(0, 1))}</div>
+                        <img class="avatar" src="${virge:html(article.image)}" alt="">
                         <div>
                             <a class="author" href="${root}/views/profile/${virge:urlparam(article.username)}">${virge:html(article.username)}</a>
                             <time>${virge:html(article.created_at)}</time>

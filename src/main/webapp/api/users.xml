@@ -62,7 +62,6 @@
                     <NotBlankValidation><key>email</key></NotBlankValidation>
                     <RegExValidation><key>email</key><regex>[^@\s]+@[^@\s]+\.[^@\s]+</regex></RegExValidation>
                     <SizeValidation><key>bio</key><max>1024</max></SizeValidation>
-                    <SizeValidation><key>image</key><max>2048</max></SizeValidation>
                     <PasswordHashTransformer><optional>true</optional></PasswordHashTransformer>
                 </list>
             </transformers>
@@ -76,7 +75,6 @@
                                 set username = :username,
                                     email = :email,
                                     bio = nullif(:bio, ''),
-                                    image = nullif(:image, ''),
                                     password_hash = coalesce(:passwordHash, password_hash),
                                     updated_at = current_timestamp
                                 where id = :id

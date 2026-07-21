@@ -20,6 +20,7 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Personalized, searchable, paginated feed from followed authors
 - Registration, login, logout, CSRF protection, and session-backed identity
 - Protected account settings with profile and optional password updates
+- Email-derived Gravatar images with identicon fallbacks
 - Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services
 
 Final RealWorld compatibility refinements are intentionally left for subsequent vertical slices.
