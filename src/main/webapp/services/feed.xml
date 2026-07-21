@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaginatedTableService>
+    <pageSize>20</pageSize>
+    <parameters>
+        <list>
+            <SessionParameter><name>currentUserId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+        </list>
+    </parameters>
+    <page>
+        <RequestParameter><name>page</name><defaultValue>1</defaultValue></RequestParameter>
+    </page>
+    <search>
+        <RequestParameter><name>search</name></RequestParameter>
+    </search>
+    <sort>
+        <RequestParameter><name>sort</name><defaultValue>created_at</defaultValue></RequestParameter>
+    </sort>
+    <sortDirection>
+        <RequestParameter><name>descending</name><defaultValue>true</defaultValue></RequestParameter>
+    </sortDirection>
+    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, tags</columns>
+    <searchKeys>title, description, username</searchKeys>
+    <primaryKey>id</primaryKey>
+    <jndiName>jdbc/conduit</jndiName>
+    <sql><![CDATA[
+        select
+            a.id as id,
+            a.slug as slug,
+            a.title as title,
+            a.description as description,
+            cast(a.created_at as varchar) as created_at,
+            cast(a.updated_at as varchar) as updated_at,
+            u.username as username,
+            u.bio as bio,
+            u.image as image,
+            (select count(*) from favorites f where f.article_id = a.id) as favorites_count,
+            exists(
+                select 1 from favorites f
+                where f.article_id = a.id and f.user_id = :currentUserId
+            ) as favorited,
+            coalesce((
+                select listagg(t.name, ',') within group (order by t.name)
+                from article_tags at
+                join tags t on t.id = at.tag_id
+                where at.article_id = a.id
+            ), '') as tags
+        from articles a
+        join users u on u.id = a.author_id
+        join follows following on following.followed_id = a.author_id and following.follower_id = :currentUserId
+    ]]></sql>
+    <output><JSONOutput /></output>
+</PaginatedTableService>

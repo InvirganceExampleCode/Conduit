@@ -12,9 +12,18 @@
 
     <main class="container layout">
         <section aria-labelledby="feed-title">
+            <virge:set var="followingFeed" value="${param.feed eq 'following' and not empty sessionScope.currentUserId}" />
+            <virge:set var="feedService" value="${followingFeed ? '/services/feed' : '/services/articles'}" />
+            <virge:set var="feedCountService" value="${followingFeed ? '/services/feed/count' : '/services/articles/count'}" />
             <div class="feed-tabs">
-                <h2 id="feed-title">Global Feed</h2>
+                <nav aria-label="Article feeds">
+                    <virge:if test="${not empty sessionScope.currentUserId}">
+                        <a class="${followingFeed ? 'active' : ''}" href="?feed=following">Your Feed</a>
+                    </virge:if>
+                    <a id="feed-title" class="${followingFeed ? '' : 'active'}" href="?">Global Feed</a>
+                </nav>
                 <form method="get" class="search-form">
+                    <virge:if test="${followingFeed}"><input type="hidden" name="feed" value="following"></virge:if>
                     <label class="sr-only" for="search">Search articles</label>
                     <input id="search" name="search" value="${virge:html(param.search)}" placeholder="Search articles">
                     <button type="submit">Search</button>
@@ -22,18 +31,23 @@
             </div>
 
             <virge:set var="currentPage" value="${empty param.page ? 1 : param.page}" />
-            <virge:service var="articles" path="/services/articles">
+            <virge:service var="articles" path="${feedService}">
                 <virge:parameter name="page" value="${currentPage}" />
                 <virge:parameter name="search" value="${param.search}" />
                 <virge:parameter name="sort" value="created_at" />
                 <virge:parameter name="descending" value="true" />
             </virge:service>
-            <virge:service var="articleCount" path="/services/articles/count">
+            <virge:service var="articleCount" path="${feedCountService}">
                 <virge:parameter name="page" value="${currentPage}" />
                 <virge:parameter name="search" value="${param.search}" />
                 <virge:parameter name="sort" value="created_at" />
                 <virge:parameter name="descending" value="true" />
             </virge:service>
+            <virge:set var="summary" value="${virge:first(articleCount)}" />
+
+            <virge:if test="${summary.count eq 0}">
+                <p class="empty-feed">${followingFeed ? 'Articles from people you follow will appear here.' : 'No articles match this feed.'}</p>
+            </virge:if>
 
             <virge:iterate var="article" items="${articles}">
                 <article class="article-preview">
@@ -62,21 +76,21 @@
                 </article>
             </virge:iterate>
 
-            <virge:iterate var="summary" items="${articleCount}">
+            <virge:if test="${summary.count gt 0}">
                 <nav class="pagination" aria-label="Article pages">
                     <a class="${currentPage <= 1 ? 'disabled' : ''}"
-                       href="?page=${currentPage - 1}&amp;search=${virge:urlparam(param.search)}">Previous</a>
+                       href="?page=${currentPage - 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;search=${virge:urlparam(param.search)}">Previous</a>
                     <span>Page ${virge:html(currentPage)} of ${virge:html(summary.pages)}</span>
                     <a class="${currentPage >= summary.pages ? 'disabled' : ''}"
-                       href="?page=${currentPage + 1}&amp;search=${virge:urlparam(param.search)}">Next</a>
+                       href="?page=${currentPage + 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;search=${virge:urlparam(param.search)}">Next</a>
                 </nav>
-            </virge:iterate>
+            </virge:if>
         </section>
 
         <aside class="sidebar">
             <h2>Skeleton status</h2>
             <p>The database, service pipeline, pagination, JSON output, and JSP rendering are active.</p>
-            <p>Authentication, article publishing, comments, and favorites are active.</p>
+            <p>Authentication, publishing, comments, favorites, profiles, follows, and personalized feeds are active.</p>
         </aside>
     </main>
 <jsp:include page="/include/footer.jsp" />
