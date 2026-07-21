@@ -41,5 +41,51 @@
             </output>
         </InsertService>
     </POST>
+    <PUT>
+        <InsertService>
+            <parameters>
+                <list>
+                    <SessionParameter><name>id</name><sessionKey>currentUserId</sessionKey></SessionParameter>
+                </list>
+            </parameters>
+            <origin><RequestBodyOrigin /></origin>
+            <input><JSONInput /></input>
+            <injectParameters>
+                <list><string>id</string></list>
+            </injectParameters>
+            <transformers>
+                <list>
+                    <CsrfValidationTransformer />
+                    <NotBlankValidation><key>username</key></NotBlankValidation>
+                    <SizeValidation><key>username</key><min>3</min><max>32</max></SizeValidation>
+                    <RegExValidation><key>username</key><regex>[A-Za-z0-9_]+</regex></RegExValidation>
+                    <NotBlankValidation><key>email</key></NotBlankValidation>
+                    <RegExValidation><key>email</key><regex>[^@\s]+@[^@\s]+\.[^@\s]+</regex></RegExValidation>
+                    <SizeValidation><key>bio</key><max>1024</max></SizeValidation>
+                    <SizeValidation><key>image</key><max>2048</max></SizeValidation>
+                    <PasswordHashTransformer><optional>true</optional></PasswordHashTransformer>
+                </list>
+            </transformers>
+            <consumer>
+                <AuthenticatedConsumer>
+                    <consumer>
+                        <QueryConsumer>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                update users
+                                set username = :username,
+                                    email = :email,
+                                    bio = nullif(:bio, ''),
+                                    image = nullif(:image, ''),
+                                    password_hash = coalesce(:passwordHash, password_hash),
+                                    updated_at = current_timestamp
+                                where id = :id
+                            ]]></sql>
+                        </QueryConsumer>
+                    </consumer>
+                </AuthenticatedConsumer>
+            </consumer>
+            <output><JSONOutput /></output>
+        </InsertService>
+    </PUT>
 </RESTService>
-

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <HypermediaService>
     <page>/WEB-INF/pages/settings.jsp</page>
+    <verbs>
+        <list>
+            <verb>
+                <name>settings</name>
+                <page>/WEB-INF/pages/settings.jsp</page>
+                <service>/api/users</service>
+                <method>PUT</method>
+                <redirect>/auth/settings?updated=true</redirect>
+            </verb>
+        </list>
+    </verbs>
 </HypermediaService>
-

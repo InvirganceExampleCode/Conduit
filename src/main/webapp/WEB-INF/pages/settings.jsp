@@ -4,11 +4,35 @@
 <jsp:include page="/include/header.jsp" />
     <main class="auth-page">
         <h1>Your settings</h1>
-        <dl class="account-summary">
-            <dt>Username</dt><dd>${virge:html(sessionScope.currentUsername)}</dd>
-            <dt>Email</dt><dd>${virge:html(sessionScope.currentEmail)}</dd>
-        </dl>
-        <p>Profile editing will arrive with the profile vertical slice.</p>
+        <virge:if test="${param.updated eq 'true'}">
+            <p class="form-success" role="status">Your settings have been updated.</p>
+        </virge:if>
+        <form method="post" action="${root}/auth/settings" class="auth-form">
+            <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+            <label>
+                Username
+                <input name="username" value="${virge:html(sessionScope.currentUsername)}" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_]+" autocomplete="username">
+            </label>
+            <label>
+                Email
+                <input type="email" name="email" value="${virge:html(sessionScope.currentEmail)}" required maxlength="320" autocomplete="email">
+            </label>
+            <label>
+                Bio
+                <textarea name="bio" rows="4" maxlength="1024">${virge:html(sessionScope.currentBio)}</textarea>
+            </label>
+            <label>
+                Profile image URL
+                <input type="url" name="image" value="${virge:html(sessionScope.currentImage)}" maxlength="2048" autocomplete="url">
+            </label>
+            <label>
+                New password
+                <input type="password" name="password" minlength="8" autocomplete="new-password" aria-describedby="password-help">
+            </label>
+            <small id="password-help">Leave blank to keep your current password.</small>
+            <button type="submit">Update settings</button>
+        </form>
+        <hr>
         <form method="post" action="${root}/auth/logout">
             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
             <button type="submit" class="danger-button">Log out</button>
