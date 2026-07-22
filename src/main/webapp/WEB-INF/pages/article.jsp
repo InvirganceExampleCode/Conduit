@@ -23,7 +23,7 @@
                     <img class="avatar" src="${virge:html(article.image)}" alt="">
                     <div>
                         <a class="article-author" href="${root}/views/profile/${virge:urlparam(article.profile_slug)}">${virge:html(article.username)}</a>
-                        <time>${virge:html(article.created_at)}</time>
+                        <time datetime="${virge:html(article.created_at)}" data-relative-time>${virge:html(article.created_at)}</time>
                     </div>
                     <virge:if test="${empty sessionScope.currentUserId}">
                         <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
@@ -75,7 +75,8 @@
             <article class="comment">
                 <p>${virge:html(comment.body)}</p>
                 <footer>
-                    <a href="${root}/views/profile/${virge:urlparam(comment.profile_slug)}">${virge:html(comment.username)}</a> · ${virge:html(comment.created_at)}
+                    <a href="${root}/views/profile/${virge:urlparam(comment.profile_slug)}">${virge:html(comment.username)}</a> ·
+                    <time datetime="${virge:html(comment.created_at)}" data-relative-time>${virge:html(comment.created_at)}</time>
                     <virge:if test="${sessionScope.currentUserId eq comment.author_id}">
                         <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/comments/${comment.id}/delete-comment" class="inline-form">
                             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">

@@ -47,7 +47,7 @@
                     <img class="avatar" src="${virge:html(article.image)}" alt="">
                     <div>
                         <span class="author">${virge:html(article.username)}</span>
-                        <time>${virge:html(article.created_at)}</time>
+                        <time datetime="${virge:html(article.created_at)}" data-relative-time>${virge:html(article.created_at)}</time>
                     </div>
                     <virge:if test="${empty sessionScope.currentUserId}">
                         <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
