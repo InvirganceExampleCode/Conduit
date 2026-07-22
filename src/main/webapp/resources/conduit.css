@@ -110,7 +110,7 @@ button:hover, .button:hover { background: var(--green-dark); }
 .markdown > :last-child { margin-bottom: 0; }
 .markdown code { padding: .1rem .25rem; border-radius: .2rem; background: var(--wash); font-family: Consolas, monospace; }
 .markdown pre { position: relative; overflow-x: auto; padding: 0; border: 1px solid var(--line); border-radius: .25rem; background: white; }
-.markdown pre code, .markdown pre code.hljs { display: block; padding: 2.75rem 1rem 1rem; background: white; }
+.markdown pre code, .markdown pre code.hljs { display: block; padding: .85rem 3.25rem .85rem 1rem; background: white; font-size: .875rem; line-height: 1.45; tab-size: 4; }
 .markdown .code-copy { position: absolute; top: .5rem; right: .5rem; display: grid; width: 2rem; height: 2rem; padding: 0; place-items: center; border-color: var(--line); color: var(--muted); background: white; }
 .markdown .code-copy svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .markdown .code-copy:hover { color: var(--ink); background: var(--wash); }
