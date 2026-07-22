@@ -1,10 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
 <virge:service var="profiles" path="/api/profile/${param.username}" />
-<virge:set var="profileTab" value="${param.tab eq 'favorited' ? 'favorited' : 'articles'}" />
+<virge:set var="profileTab" value="${param.tab eq 'favorited' ? 'favorited' : (param.tab eq 'comments' ? 'comments' : 'articles')}" />
 <virge:service var="articles" path="/api/profile/${param.username}/articles">
     <virge:parameter name="tab" value="${profileTab}" />
 </virge:service>
+<virge:service var="comments" path="/api/profile/${param.username}/comments" />
 <virge:set var="profile" value="${virge:first(profiles)}" scope="request" />
 <virge:set var="pageTitle" value="${profile.username} — Conduit" scope="request" />
 <jsp:include page="/include/header.jsp" />
@@ -36,11 +37,13 @@
     </header>
 
     <main class="container profile-articles">
-        <nav class="profile-tabs" aria-label="Profile articles">
+        <nav class="profile-tabs" aria-label="Profile activity">
             <a class="${profileTab eq 'articles' ? 'active' : ''}" href="?tab=articles">Articles by ${virge:html(profile.username)}</a>
             <a class="${profileTab eq 'favorited' ? 'active' : ''}" href="?tab=favorited">Favorited articles</a>
+            <a class="${profileTab eq 'comments' ? 'active' : ''}" href="?tab=comments">Comments</a>
         </nav>
-        <virge:if test="${empty articles}"><p>No articles published yet.</p></virge:if>
+        <virge:if test="${profileTab ne 'comments'}">
+        <virge:if test="${empty articles}"><p>No articles found.</p></virge:if>
         <virge:iterate var="article" items="${articles}">
             <article class="article-preview">
                 <div class="article-meta">
@@ -71,6 +74,19 @@
                 </p>
             </article>
         </virge:iterate>
+        </virge:if>
+        <virge:if test="${profileTab eq 'comments'}">
+            <virge:if test="${empty comments}"><p>No comments posted yet.</p></virge:if>
+            <virge:iterate var="comment" items="${comments}">
+                <article class="comment profile-comment">
+                    <p>${virge:html(comment.body)}</p>
+                    <footer>
+                        <time datetime="${virge:html(comment.created_at)}" data-relative-time>${virge:html(comment.created_at)}</time>
+                        on <a href="${root}/views/article/${virge:urlparam(comment.article_slug)}">${virge:html(comment.article_title)}</a>
+                    </footer>
+                </article>
+            </virge:iterate>
+        </virge:if>
     </main>
 </virge:if>
 

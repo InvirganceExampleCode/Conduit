@@ -3,6 +3,35 @@
     <routes>
         <map>
             <entry>
+                <string>/api/profile/*/comments</string>
+                <SelectService>
+                    <parameters>
+                        <list>
+                            <PathVariable><path>/api/profile/{username}/comments</path></PathVariable>
+                        </list>
+                    </parameters>
+                    <binding>
+                        <QueryBinding>
+                            <jndiName>jdbc/conduit</jndiName>
+                            <sql><![CDATA[
+                                select
+                                    c.id as "id",
+                                    c.body as "body",
+                                    to_char(c.created_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as "created_at",
+                                    a.slug as "article_slug",
+                                    a.title as "article_title"
+                                from comments c
+                                join users u on u.id = c.author_id
+                                join articles a on a.id = c.article_id
+                                where u.slug = :username
+                                order by c.created_at desc, c.id desc
+                            ]]></sql>
+                        </QueryBinding>
+                    </binding>
+                    <output><JSONOutput /></output>
+                </SelectService>
+            </entry>
+            <entry>
                 <string>/api/profile/*/articles</string>
                 <SelectService>
                     <parameters>
