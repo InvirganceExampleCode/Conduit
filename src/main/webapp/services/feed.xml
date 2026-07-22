@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<AuthenticatedService>
+<service>
 <PaginatedTableService>
     <pageSize>20</pageSize>
     <parameters>
@@ -62,3 +64,6 @@
     </transformers>
     <output><JSONOutput /></output>
 </PaginatedTableService>
+</service>
+<redirectToLogin>false</redirectToLogin>
+</AuthenticatedService>

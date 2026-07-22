@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<AuthenticatedService>
+<service>
 <HypermediaService>
     <parameters>
         <list>
@@ -22,3 +24,5 @@
         </list>
     </verbs>
 </HypermediaService>
+</service>
+</AuthenticatedService>

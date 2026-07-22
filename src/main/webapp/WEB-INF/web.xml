@@ -25,22 +25,6 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
-    <filter>
-        <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.invirgance.conduit.auth.filter.AuthenticationFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/auth/settings</url-pattern>
-        <url-pattern>/views/editor/*</url-pattern>
-        <url-pattern>/views/favorite/*</url-pattern>
-        <url-pattern>/services/feed</url-pattern>
-        <url-pattern>/services/feed/*</url-pattern>
-        <url-pattern>/api/articles</url-pattern>
-        <url-pattern>/api/articles/*</url-pattern>
-        <url-pattern>/api/profiles/*</url-pattern>
-    </filter-mapping>
-
     <session-config>
         <session-timeout>30</session-timeout>
         <cookie-config>

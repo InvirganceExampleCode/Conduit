@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<AuthenticatedService>
+<service>
 <RoutedService>
     <routes>
         <map>
@@ -47,3 +49,5 @@
         </map>
     </routes>
 </RoutedService>
+</service>
+</AuthenticatedService>

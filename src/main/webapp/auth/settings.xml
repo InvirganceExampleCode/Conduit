@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<AuthenticatedService>
+<service>
 <HypermediaService>
     <page>/WEB-INF/pages/settings.jsp</page>
     <verbs>
@@ -13,3 +15,5 @@
         </list>
     </verbs>
 </HypermediaService>
+</service>
+</AuthenticatedService>

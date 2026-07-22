@@ -42,6 +42,8 @@
         </InsertService>
     </POST>
     <PUT>
+        <AuthenticatedService>
+        <service>
         <InsertService>
             <parameters>
                 <list>
@@ -85,5 +87,8 @@
             </consumer>
             <output><JSONOutput /></output>
         </InsertService>
+        </service>
+        <redirectToLogin>false</redirectToLogin>
+        </AuthenticatedService>
     </PUT>
 </RESTService>
