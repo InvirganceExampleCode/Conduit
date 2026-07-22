@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
+<%@taglib uri="convirgance:component" prefix="component" %>
 <virge:service var="articles" path="/api/article/${param.slug}" />
 <virge:service var="comments" path="/api/article/${param.slug}/comments" />
 <virge:set var="article" value="${virge:first(articles)}" scope="request" />
@@ -20,20 +21,14 @@
             <div class="container">
                 <h1>${virge:html(article.title)}</h1>
                 <div class="article-meta article-hero-meta">
-                    <img class="avatar" src="${virge:html(article.image)}" alt="">
-                    <div>
-                        <a class="article-author" href="${root}/views/profile/${virge:urlparam(article.profile_slug)}">${virge:html(article.username)}</a>
-                        <time datetime="${virge:html(article.created_at)}" data-relative-time>${virge:html(article.created_at)}</time>
-                    </div>
-                    <virge:if test="${empty sessionScope.currentUserId}">
-                        <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
-                    </virge:if>
-                    <virge:if test="${not empty sessionScope.currentUserId}">
-                        <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" class="favorite-form">
-                            <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
-                            <button type="submit" class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</button>
-                        </form>
-                    </virge:if>
+                    <component:include page="/WEB-INF/components/author-meta.jsp">
+                        <component:arg name="author" value="${article}" />
+                        <component:arg name="authorClass" value="article-author" />
+                    </component:include>
+                    <component:include page="/WEB-INF/components/favorite-control.jsp">
+                        <component:arg name="article" value="${article}" />
+                        <component:arg name="action" value="${root}/views/article/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" />
+                    </component:include>
                     <virge:if test="${sessionScope.currentUserId eq article.author_id}">
                         <span class="owner-actions">
                             <a href="${root}/views/editor/${virge:urlparam(article.slug)}/edit">Edit article</a>
@@ -50,11 +45,10 @@
         <div class="container article-content">
             <p class="article-description">${virge:html(article.description)}</p>
             <div class="article-body markdown">${article.bodyHtml}</div>
-            <p class="tags">
-                <virge:iterate var="tag" items="${article.tagList}">
-                    <a href="${root}/?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>
-                </virge:iterate>
-            </p>
+            <component:include page="/WEB-INF/components/tag-list.jsp">
+                <component:arg name="tags" value="${article.tagList}" />
+                <component:arg name="baseUrl" value="${root}/?tag=" />
+            </component:include>
         </div>
     </article>
 
@@ -72,19 +66,11 @@
             </form>
         </virge:if>
         <virge:iterate var="comment" items="${comments}">
-            <article class="comment">
-                <p>${virge:html(comment.body)}</p>
-                <footer>
-                    <a href="${root}/views/profile/${virge:urlparam(comment.profile_slug)}">${virge:html(comment.username)}</a> ·
-                    <time datetime="${virge:html(comment.created_at)}" data-relative-time>${virge:html(comment.created_at)}</time>
-                    <virge:if test="${sessionScope.currentUserId eq comment.author_id}">
-                        <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/comments/${comment.id}/delete-comment" class="inline-form">
-                            <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
-                            <button type="submit" class="link-button danger-link">Delete</button>
-                        </form>
-                    </virge:if>
-                </footer>
-            </article>
+            <component:include page="/WEB-INF/components/comment-card.jsp">
+                <component:arg name="comment" value="${comment}" />
+                <component:arg name="article" value="${article}" />
+                <component:arg name="profileActivity" value="${false}" />
+            </component:include>
         </virge:iterate>
     </section>
 </virge:if>

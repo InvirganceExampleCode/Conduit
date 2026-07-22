@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
+<%@taglib uri="convirgance:component" prefix="component" %>
 <virge:set var="pageTitle" value="Conduit" scope="request" />
 <jsp:include page="/include/header.jsp" />
 
@@ -53,34 +54,11 @@
             </virge:if>
 
             <virge:iterate var="article" items="${articles}">
-                <article class="article-preview">
-                    <div class="article-meta">
-                        <img class="avatar" src="${virge:html(article.image)}" alt="">
-                        <div>
-                            <a class="author" href="${root}/views/profile/${virge:urlparam(article.profile_slug)}">${virge:html(article.username)}</a>
-                            <time datetime="${virge:html(article.created_at)}" data-relative-time>${virge:html(article.created_at)}</time>
-                        </div>
-                        <virge:if test="${empty sessionScope.currentUserId}">
-                            <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
-                        </virge:if>
-                        <virge:if test="${not empty sessionScope.currentUserId}">
-                            <form method="post" action="${root}/views/favorite/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" class="favorite-form">
-                                <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
-                                <button type="submit" class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</button>
-                            </form>
-                        </virge:if>
-                    </div>
-                    <a class="article-link" href="${root}/views/article/${virge:urlparam(article.slug)}">
-                        <h3>${virge:html(article.title)}</h3>
-                        <p>${virge:html(article.description)}</p>
-                        <span>Read more…</span>
-                    </a>
-                    <p class="tags">
-                        <virge:iterate var="tag" items="${article.tagList}">
-                            <a href="?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>
-                        </virge:iterate>
-                    </p>
-                </article>
+                <component:include page="/WEB-INF/components/article-preview.jsp">
+                    <component:arg name="article" value="${article}" />
+                    <component:arg name="favoriteAction" value="${root}/views/favorite/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" />
+                    <component:arg name="tagBaseUrl" value="?tag=" />
+                </component:include>
             </virge:iterate>
 
             <virge:if test="${summary.count gt 0}">

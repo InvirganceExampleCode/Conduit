@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
+<%@taglib uri="convirgance:component" prefix="component" %>
 <virge:service var="profiles" path="/api/profile/${param.username}" />
 <virge:set var="profileTab" value="${param.tab eq 'favorited' ? 'favorited' : (param.tab eq 'comments' ? 'comments' : 'articles')}" />
 <virge:service var="articles" path="/api/profile/${param.username}/articles">
@@ -45,46 +46,20 @@
         <virge:if test="${profileTab ne 'comments'}">
         <virge:if test="${empty articles}"><p>No articles found.</p></virge:if>
         <virge:iterate var="article" items="${articles}">
-            <article class="article-preview">
-                <div class="article-meta">
-                    <img class="avatar" src="${virge:html(article.image)}" alt="">
-                    <div>
-                        <span class="author">${virge:html(article.username)}</span>
-                        <time datetime="${virge:html(article.created_at)}" data-relative-time>${virge:html(article.created_at)}</time>
-                    </div>
-                    <virge:if test="${empty sessionScope.currentUserId}">
-                        <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
-                    </virge:if>
-                    <virge:if test="${not empty sessionScope.currentUserId}">
-                        <form method="post" action="${root}/views/profile/${virge:urlparam(profile.profile_slug)}/articles/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}?tab=${profileTab}" class="favorite-form">
-                            <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
-                            <button type="submit" class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</button>
-                        </form>
-                    </virge:if>
-                </div>
-                <a class="article-link" href="${root}/views/article/${virge:urlparam(article.slug)}">
-                    <h3>${virge:html(article.title)}</h3>
-                    <p>${virge:html(article.description)}</p>
-                    <span>Read more…</span>
-                </a>
-                <p class="tags">
-                    <virge:iterate var="tag" items="${article.tagList}">
-                        <a href="${root}/?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>
-                    </virge:iterate>
-                </p>
-            </article>
+            <component:include page="/WEB-INF/components/article-preview.jsp">
+                <component:arg name="article" value="${article}" />
+                <component:arg name="favoriteAction" value="${root}/views/profile/${virge:urlparam(profile.profile_slug)}/articles/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}?tab=${profileTab}" />
+                <component:arg name="tagBaseUrl" value="${root}/?tag=" />
+            </component:include>
         </virge:iterate>
         </virge:if>
         <virge:if test="${profileTab eq 'comments'}">
             <virge:if test="${empty comments}"><p>No comments posted yet.</p></virge:if>
             <virge:iterate var="comment" items="${comments}">
-                <article class="comment profile-comment">
-                    <p>${virge:html(comment.body)}</p>
-                    <footer>
-                        <time datetime="${virge:html(comment.created_at)}" data-relative-time>${virge:html(comment.created_at)}</time>
-                        on <a href="${root}/views/article/${virge:urlparam(comment.article_slug)}">${virge:html(comment.article_title)}</a>
-                    </footer>
-                </article>
+                <component:include page="/WEB-INF/components/comment-card.jsp">
+                    <component:arg name="comment" value="${comment}" />
+                    <component:arg name="profileActivity" value="${true}" />
+                </component:include>
             </virge:iterate>
         </virge:if>
     </main>
