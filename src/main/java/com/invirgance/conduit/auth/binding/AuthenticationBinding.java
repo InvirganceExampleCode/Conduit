@@ -22,7 +22,13 @@ public class AuthenticationBinding implements Binding
         SessionSecurity.validateCsrf(parameters.getString("csrf"));
 
         JSONObject user = null;
-        for(JSONObject record : binding.getBinding(parameters)) if(user == null) user = record;
+        for(JSONObject record : binding.getBinding(parameters))
+        {
+            if(user == null)
+            {
+                user = record;
+            }
+        }
 
         if(user == null || !passwordMatches(parameters.getString("password"), user.getString("passwordHash"))) return failure();
 
@@ -49,4 +55,3 @@ public class AuthenticationBinding implements Binding
         return new JSONArray<>(failure);
     }
 }
-

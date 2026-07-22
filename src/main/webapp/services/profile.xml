@@ -8,6 +8,7 @@
                     <parameters>
                         <list>
                             <PathVariable><path>/services/profile/{username}/articles</path></PathVariable>
+                            <RequestParameter><name>tab</name><defaultValue>articles</defaultValue></RequestParameter>
                             <SessionParameter>
                                 <name>currentUserId</name>
                                 <sessionKey>currentUserId</sessionKey>
@@ -31,19 +32,33 @@
                                         select 1 from favorites f
                                         where f.article_id = a.id and f.user_id = :currentUserId
                                     ) as "favorited",
-                                    coalesce((
-                                        select listagg(t.name, ',') within group (order by t.name)
-                                        from article_tags at
-                                        join tags t on t.id = at.tag_id
-                                        where at.article_id = a.id
-                                    ), '') as "tags"
+                                    article_tag.name as "name"
                                 from articles a
                                 join users u on u.id = a.author_id
-                                where u.username = :username
-                                order by a.created_at desc, a.id desc
+                                left join article_tags article_tag_link on article_tag_link.article_id = a.id
+                                left join tags article_tag on article_tag.id = article_tag_link.tag_id
+                                where (
+                                    :tab = 'favorited'
+                                    and exists(
+                                        select 1 from favorites profile_favorite
+                                        join users profile_user on profile_user.id = profile_favorite.user_id
+                                        where profile_favorite.article_id = a.id and profile_user.username = :username
+                                    )
+                                ) or (
+                                    :tab <> 'favorited' and u.username = :username
+                                )
+                                order by a.created_at desc, a.id desc, article_tag.name
                             ]]></sql>
                         </QueryBinding>
                     </binding>
+                    <transformers>
+                        <list>
+                            <SortedGroupByTransformer>
+                                <fields>slug,title,description,created_at,username,image,favorites_count,favorited</fields>
+                                <output>tagList</output>
+                            </SortedGroupByTransformer>
+                        </list>
+                    </transformers>
                     <output><JSONOutput /></output>
                 </SelectService>
             </entry>

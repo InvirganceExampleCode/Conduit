@@ -50,7 +50,11 @@
         <div class="container article-content">
             <p class="article-description">${virge:html(article.description)}</p>
             <div class="article-body markdown">${article.bodyHtml}</div>
-            <p class="tags">${virge:html(article.tags)}</p>
+            <p class="tags">
+                <virge:iterate var="tag" items="${article.tagList}">
+                    <a href="${root}/?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>
+                </virge:iterate>
+            </p>
         </div>
     </article>
 

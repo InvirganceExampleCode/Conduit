@@ -36,20 +36,22 @@
                                         select 1 from favorites f
                                         where f.article_id = a.id and f.user_id = :currentUserId
                                     ) as "favorited",
-                                    coalesce((
-                                        select listagg(t.name, ',') within group (order by t.name)
-                                        from article_tags at
-                                        join tags t on t.id = at.tag_id
-                                        where at.article_id = a.id
-                                    ), '') as "tags"
+                                    article_tag.name as "name"
                                 from articles a
                                 join users u on u.id = a.author_id
+                                left join article_tags article_tag_link on article_tag_link.article_id = a.id
+                                left join tags article_tag on article_tag.id = article_tag_link.tag_id
                                 where a.slug = :slug
+                                order by a.id, article_tag.name
                             ]]></sql>
                         </QueryBinding>
                     </binding>
                     <transformers>
                         <list>
+                            <SortedGroupByTransformer>
+                                <fields>id,author_id,slug,title,description,body,created_at,updated_at,username,bio,image,favorites_count,favorited</fields>
+                                <output>tagList</output>
+                            </SortedGroupByTransformer>
                             <MarkdownTransformer>
                                 <input>body</input>
                                 <output>bodyHtml</output>

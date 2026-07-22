@@ -28,6 +28,17 @@ class PaginatedTableServiceTest
                      () -> service.generateSQL(1, null, "created_at; drop table articles", true, true));
     }
 
+    @Test
+    void sortUsesPrimaryKeyAsATieBreaker()
+    {
+        var service = service();
+        service.setPrimaryKey("id");
+
+        String sql = service.generateSQL(1, null, "created_at", true, true);
+
+        assertTrue(sql.contains("order by source.created_at desc nulls last, source.id desc"));
+    }
+
     private PaginatedTableService service()
     {
         var service = new PaginatedTableService();

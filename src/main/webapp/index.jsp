@@ -24,6 +24,7 @@
                 </nav>
                 <form method="get" class="search-form">
                     <virge:if test="${followingFeed}"><input type="hidden" name="feed" value="following"></virge:if>
+                    <virge:if test="${not empty param.tag}"><input type="hidden" name="tag" value="${virge:html(param.tag)}"></virge:if>
                     <label class="sr-only" for="search">Search articles</label>
                     <input id="search" name="search" value="${virge:html(param.search)}" placeholder="Search articles">
                     <button type="submit">Search</button>
@@ -36,12 +37,14 @@
                 <virge:parameter name="search" value="${param.search}" />
                 <virge:parameter name="sort" value="created_at" />
                 <virge:parameter name="descending" value="true" />
+                <virge:parameter name="tag" value="${param.tag}" />
             </virge:service>
             <virge:service var="articleCount" path="${feedCountService}">
                 <virge:parameter name="page" value="${currentPage}" />
                 <virge:parameter name="search" value="${param.search}" />
                 <virge:parameter name="sort" value="created_at" />
                 <virge:parameter name="descending" value="true" />
+                <virge:parameter name="tag" value="${param.tag}" />
             </virge:service>
             <virge:set var="summary" value="${virge:first(articleCount)}" />
 
@@ -72,25 +75,34 @@
                         <p>${virge:html(article.description)}</p>
                         <span>Read more…</span>
                     </a>
-                    <p class="tags">${virge:html(article.tags)}</p>
+                    <p class="tags">
+                        <virge:iterate var="tag" items="${article.tagList}">
+                            <a href="?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>
+                        </virge:iterate>
+                    </p>
                 </article>
             </virge:iterate>
 
             <virge:if test="${summary.count gt 0}">
                 <nav class="pagination" aria-label="Article pages">
                     <a class="${currentPage <= 1 ? 'disabled' : ''}"
-                       href="?page=${currentPage - 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;search=${virge:urlparam(param.search)}">Previous</a>
+                       href="?page=${currentPage - 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;tag=${virge:urlparam(param.tag)}&amp;search=${virge:urlparam(param.search)}">Previous</a>
                     <span>Page ${virge:html(currentPage)} of ${virge:html(summary.pages)}</span>
                     <a class="${currentPage >= summary.pages ? 'disabled' : ''}"
-                       href="?page=${currentPage + 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;search=${virge:urlparam(param.search)}">Next</a>
+                       href="?page=${currentPage + 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;tag=${virge:urlparam(param.tag)}&amp;search=${virge:urlparam(param.search)}">Next</a>
                 </nav>
             </virge:if>
         </section>
 
         <aside class="sidebar">
-            <h2>Skeleton status</h2>
-            <p>The database, service pipeline, pagination, JSON output, and JSP rendering are active.</p>
-            <p>Authentication, publishing, comments, favorites, profiles, follows, and personalized feeds are active.</p>
+            <h2>Popular tags</h2>
+            <virge:service var="popularTags" path="/services/tags" />
+            <div class="tag-cloud">
+                <virge:iterate var="tag" items="${popularTags}">
+                    <a class="${param.tag eq tag.name ? 'active' : ''}" href="?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>
+                </virge:iterate>
+            </div>
+            <virge:if test="${not empty param.tag}"><a class="clear-filter" href="?">Clear tag filter</a></virge:if>
         </aside>
     </main>
 <jsp:include page="/include/footer.jsp" />

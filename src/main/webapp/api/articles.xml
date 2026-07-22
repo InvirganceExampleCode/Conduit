@@ -49,7 +49,7 @@
                                 <list>
                                     <PathVariable><path>/api/articles/{slug}/comments</path></PathVariable>
                                     <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
-                                    <RequestParameter><name>body</name></RequestParameter>
+                                    <ValidatedRequestParameter><name>body</name><label>Comment</label><maxLength>4000</maxLength></ValidatedRequestParameter>
                                     <CsrfParameter />
                                 </list>
                             </parameters>
@@ -92,14 +92,14 @@
                 <string>/api/articles/create</string>
                 <RESTService>
                     <POST>
-                        <UpdateService>
+                        <ReturningUpdateService>
                             <parameters>
                                 <list>
+                                    <ValidatedRequestParameter><name>title</name><label>Article title</label><maxLength>255</maxLength></ValidatedRequestParameter>
+                                    <ValidatedRequestParameter><name>description</name><label>Description</label><maxLength>1024</maxLength></ValidatedRequestParameter>
+                                    <ValidatedRequestParameter><name>body</name><label>Article body</label></ValidatedRequestParameter>
                                     <GeneratedSlugParameter />
                                     <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
-                                    <RequestParameter><name>title</name></RequestParameter>
-                                    <RequestParameter><name>description</name></RequestParameter>
-                                    <RequestParameter><name>body</name></RequestParameter>
                                     <CsrfParameter />
                                     <ArticleTagsParameter />
                                 </list>
@@ -129,7 +129,8 @@
                                     </entry>
                                 </map>
                             </children>
-                        </UpdateService>
+                            <returnParameters><list><string>slug</string></list></returnParameters>
+                        </ReturningUpdateService>
                     </POST>
                 </RESTService>
             </entry>
@@ -142,9 +143,9 @@
                                 <list>
                                     <PathVariable><path>/api/articles/{slug}</path></PathVariable>
                                     <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
-                                    <RequestParameter><name>title</name></RequestParameter>
-                                    <RequestParameter><name>description</name></RequestParameter>
-                                    <RequestParameter><name>body</name></RequestParameter>
+                                    <ValidatedRequestParameter><name>title</name><label>Article title</label><maxLength>255</maxLength></ValidatedRequestParameter>
+                                    <ValidatedRequestParameter><name>description</name><label>Description</label><maxLength>1024</maxLength></ValidatedRequestParameter>
+                                    <ValidatedRequestParameter><name>body</name><label>Article body</label></ValidatedRequestParameter>
                                     <CsrfParameter />
                                     <ArticleTagsParameter />
                                 </list>

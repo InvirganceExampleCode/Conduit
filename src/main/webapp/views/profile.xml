@@ -3,6 +3,7 @@
     <parameters>
         <list>
             <PathVariable><path>/views/profile/{username}</path></PathVariable>
+            <PathVariable><path>/views/profile/*/articles/{articleSlug}/*</path></PathVariable>
         </list>
     </parameters>
     <page>/WEB-INF/pages/profile.jsp</page>
@@ -17,6 +18,18 @@
             <verb>
                 <name>unfollow</name>
                 <service>/api/profiles/{username}/follow</service>
+                <method>DELETE</method>
+                <redirect>/views/profile/{username}</redirect>
+            </verb>
+            <verb>
+                <name>favorite</name>
+                <service>/api/articles/{articleSlug}/favorite</service>
+                <method>POST</method>
+                <redirect>/views/profile/{username}</redirect>
+            </verb>
+            <verb>
+                <name>unfavorite</name>
+                <service>/api/articles/{articleSlug}/favorite</service>
                 <method>DELETE</method>
                 <redirect>/views/profile/{username}</redirect>
             </verb>

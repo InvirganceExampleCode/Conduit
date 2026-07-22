@@ -8,6 +8,7 @@
                 <sessionKey>currentUserId</sessionKey>
                 <defaultValue>0</defaultValue>
             </SessionParameter>
+            <RequestParameter><name>tag</name></RequestParameter>
         </list>
     </parameters>
     <page>
@@ -33,7 +34,7 @@
             <defaultValue>true</defaultValue>
         </RequestParameter>
     </sortDirection>
-    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, tags</columns>
+    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, name</columns>
     <searchKeys>title, description, username</searchKeys>
     <primaryKey>id</primaryKey>
     <jndiName>jdbc/conduit</jndiName>
@@ -53,15 +54,26 @@
                 select 1 from favorites f
                 where f.article_id = a.id and f.user_id = :currentUserId
             ) as favorited,
-            coalesce((
-                select listagg(t.name, ',') within group (order by t.name)
-                from article_tags at
-                join tags t on t.id = at.tag_id
-                where at.article_id = a.id
-            ), '') as tags
+            article_tag.name as name
         from articles a
         join users u on u.id = a.author_id
+        left join article_tags article_tag_link on article_tag_link.article_id = a.id
+        left join tags article_tag on article_tag.id = article_tag_link.tag_id
+        where coalesce(cast(:tag as varchar), '') = ''
+           or exists(
+                select 1 from article_tags selected_at
+                join tags selected_tag on selected_tag.id = selected_at.tag_id
+                where selected_at.article_id = a.id and selected_tag.name = :tag
+           )
     ]]></sql>
+    <transformers>
+        <list>
+            <SortedGroupByTransformer>
+                <fields>id,slug,title,description,created_at,updated_at,username,bio,image,favorites_count,favorited</fields>
+                <output>tagList</output>
+            </SortedGroupByTransformer>
+        </list>
+    </transformers>
     <output>
         <JSONOutput />
     </output>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SelectService>
+    <binding>
+        <QueryBinding>
+            <jndiName>jdbc/conduit</jndiName>
+            <sql><![CDATA[
+                select t.name as "name", count(at.article_id) as "article_count"
+                from tags t
+                join article_tags at on at.tag_id = t.id
+                group by t.id, t.name
+                order by count(at.article_id) desc, t.name
+                limit 20
+            ]]></sql>
+        </QueryBinding>
+    </binding>
+    <output><JSONOutput /></output>
+</SelectService>

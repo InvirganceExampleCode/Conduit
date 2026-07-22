@@ -17,13 +17,17 @@ A Convirgance-native implementation of the RealWorld Conduit social publishing a
 - Authenticated comment creation and owner-only deletion
 - Favorite and unfavorite actions from article pages and the global feed
 - Public profiles with authored articles and follow/unfollow actions
+- Authored and favorited profile tabs with inline favorite controls
 - Personalized, searchable, paginated feed from followed authors
+- Popular tags, clickable tag navigation, and tag-filtered feeds
 - Registration, login, logout, CSRF protection, and session-backed identity
 - Protected account settings with profile and optional password updates
 - Email-derived Gravatar images with identicon fallbacks
+- Server-side article/comment validation with user-facing failure messages
+- Result-returning article creation with direct navigation to the new article
 - Hypermedia authentication pages backed by declarative `/api/users` and `/api/session` services
 
-Final RealWorld compatibility refinements are intentionally left for subsequent vertical slices.
+The core server-rendered RealWorld feature set is implemented. Strict compatibility with the canonical JWT/JSON API remains an intentional non-goal for this monolithic variant.
 
 ## Build and run
 

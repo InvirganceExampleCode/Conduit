@@ -152,6 +152,8 @@ public class PaginatedTableService implements Service, Processable
 
             statement.append("\norder by source.").append(sort).append(direction ? " desc" : " asc")
                      .append(" nulls last");
+
+            if(primaryKey != null && !primaryKey.equals(sort)) statement.append(", source.").append(primaryKey).append(direction ? " desc" : " asc");
         }
 
         if(page != null && pagination && (transformers == null || transformers.isEmpty()))

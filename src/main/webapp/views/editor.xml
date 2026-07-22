@@ -17,7 +17,7 @@
                                 <page>/WEB-INF/pages/editor.jsp</page>
                                 <service>/api/articles/{verb}</service>
                                 <method>POST</method>
-                                <redirect>/</redirect>
+                                <redirect>/views/article/{slug}</redirect>
                             </verb>
                         </list>
                     </verbs>
