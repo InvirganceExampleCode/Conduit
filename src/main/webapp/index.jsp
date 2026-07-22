@@ -57,7 +57,7 @@
                     <div class="article-meta">
                         <img class="avatar" src="${virge:html(article.image)}" alt="">
                         <div>
-                            <a class="author" href="${root}/views/profile/${virge:urlparam(article.username)}">${virge:html(article.username)}</a>
+                            <a class="author" href="${root}/views/profile/${virge:urlparam(article.profile_slug)}">${virge:html(article.username)}</a>
                             <time>${virge:html(article.created_at)}</time>
                         </div>
                         <virge:if test="${empty sessionScope.currentUserId}">

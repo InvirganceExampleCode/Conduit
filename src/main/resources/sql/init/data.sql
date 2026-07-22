@@ -1,6 +1,6 @@
-INSERT INTO users (id, email, username, password_hash, bio, image) VALUES
-    (1, 'jake@example.test', 'jake', 'development-only', 'I work at State Farm.', NULL),
-    (2, 'jane@example.test', 'jane', 'development-only', 'Convirgance enthusiast.', NULL)
+INSERT INTO users (id, email, username, name, slug, password_hash, bio, image) VALUES
+    (1, 'jake@example.test', 'jake', 'Jake Sully', 'jake', 'development-only', 'I work at State Farm.', NULL),
+    (2, 'jane@example.test', 'jane', 'Jane Doe', 'jane', 'development-only', 'Convirgance enthusiast.', NULL)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO articles (id, author_id, slug, title, description, body, created_at, updated_at) VALUES

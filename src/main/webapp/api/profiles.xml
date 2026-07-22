@@ -21,7 +21,7 @@
                                 insert into follows (follower_id, followed_id)
                                 select :followerId, u.id
                                 from users u
-                                where u.username = :username and u.id <> :followerId
+                                where u.slug = :username and u.id <> :followerId
                                 on conflict (follower_id, followed_id) do nothing
                             ]]></sql>
                         </UpdateService>
@@ -39,7 +39,7 @@
                             <sql><![CDATA[
                                 delete from follows
                                 where follower_id = :followerId
-                                  and followed_id = (select id from users where username = :username)
+                                  and followed_id = (select id from users where slug = :username)
                             ]]></sql>
                         </UpdateService>
                     </DELETE>

@@ -28,7 +28,7 @@
                     <sortDirection>
                         <RequestParameter><name>descending</name><defaultValue>true</defaultValue></RequestParameter>
                     </sortDirection>
-                    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, name</columns>
+                    <columns>id, slug, title, description, created_at, updated_at, username, profile_slug, bio, image, favorites_count, favorited, name</columns>
                     <searchKeys>title, description, username</searchKeys>
                     <primaryKey>id</primaryKey>
                     <jndiName>jdbc/conduit</jndiName>
@@ -40,7 +40,8 @@
                             a.description as description,
                             cast(a.created_at as varchar) as created_at,
                             cast(a.updated_at as varchar) as updated_at,
-                            u.username as username,
+                            u.name as username,
+                            u.slug as profile_slug,
                             u.bio as bio,
                             'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=80' as image,
                             (select count(*) from favorites f where f.article_id = a.id) as favorites_count,
@@ -63,7 +64,7 @@
                     <transformers>
                         <list>
                             <SortedGroupByTransformer>
-                                <fields>id,slug,title,description,created_at,updated_at,username,bio,image,favorites_count,favorited</fields>
+                                <fields>id,slug,title,description,created_at,updated_at,username,profile_slug,bio,image,favorites_count,favorited</fields>
                                 <output>tagList</output>
                             </SortedGroupByTransformer>
                         </list>
@@ -192,7 +193,7 @@
                                     <GeneratedSlugParameter />
                                     <SessionParameter><name>authorId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
                                     <CsrfParameter />
-                                    <ArticleTagsParameter />
+                                    <JSONArrayRequestParameter><name>tagList</name><keys>tagName</keys></JSONArrayRequestParameter>
                                 </list>
                             </parameters>
                             <jndiName>jdbc/conduit</jndiName>
@@ -243,7 +244,7 @@
                                     <ValidatedRequestParameter><name>description</name><label>Description</label><maxLength>1024</maxLength></ValidatedRequestParameter>
                                     <ValidatedRequestParameter><name>body</name><label>Article body</label></ValidatedRequestParameter>
                                     <CsrfParameter />
-                                    <ArticleTagsParameter />
+                                    <JSONArrayRequestParameter><name>tagList</name><keys>tagName</keys></JSONArrayRequestParameter>
                                 </list>
                             </parameters>
                             <jndiName>jdbc/conduit</jndiName>

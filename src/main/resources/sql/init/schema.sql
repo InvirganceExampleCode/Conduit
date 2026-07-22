@@ -3,7 +3,9 @@ CREATE SEQUENCE IF NOT EXISTS conduit_ids START WITH 1000;
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT PRIMARY KEY,
     email VARCHAR(320) NOT NULL,
-    username VARCHAR(64) NOT NULL,
+    username VARCHAR(160),
+    name VARCHAR(128),
+    slug VARCHAR(160),
     password_hash VARCHAR(255) NOT NULL,
     bio VARCHAR(1024),
     image VARCHAR(2048),
@@ -12,6 +14,15 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT users_email_unique UNIQUE (email),
     CONSTRAINT users_username_unique UNIQUE (username)
 );
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS name VARCHAR(128);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS slug VARCHAR(160);
+ALTER TABLE users ALTER COLUMN username DROP NOT NULL;
+UPDATE users SET name = username WHERE name IS NULL;
+UPDATE users SET slug = lower(username) WHERE slug IS NULL;
+ALTER TABLE users ALTER COLUMN name SET NOT NULL;
+ALTER TABLE users ALTER COLUMN slug SET NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS users_slug_unique ON users(slug);
 
 CREATE TABLE IF NOT EXISTS articles (
     id BIGINT PRIMARY KEY,

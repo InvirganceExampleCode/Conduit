@@ -10,8 +10,8 @@
         </virge:if>
         <form method="post" action="${root}/auth/register" class="auth-form">
             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
-            <label>Username
-                <input name="username" value="${virge:html(requestScope.username)}" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_]+" autocomplete="username">
+            <label>Full name
+                <input name="name" value="${virge:html(requestScope.name)}" required minlength="2" maxlength="128" autocomplete="name" placeholder="Full name">
             </label>
             <label>Email
                 <input type="email" name="email" value="${virge:html(requestScope.email)}" required autocomplete="email">

@@ -24,7 +24,7 @@
             <h1>${virge:html(profile.username)}</h1>
             <p>${virge:html(profile.bio)}</p>
             <virge:if test="${not empty sessionScope.currentUserId and sessionScope.currentUserId ne profile.id}">
-                <form method="post" action="${root}/views/profile/${virge:urlparam(profile.username)}/${profile.following ? 'unfollow' : 'follow'}">
+                <form method="post" action="${root}/views/profile/${virge:urlparam(profile.profile_slug)}/${profile.following ? 'unfollow' : 'follow'}">
                     <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
                     <button type="submit" class="secondary-button">${profile.following ? 'Unfollow' : 'Follow'} ${virge:html(profile.username)}</button>
                 </form>
@@ -53,7 +53,7 @@
                         <span class="favorites">♡ ${virge:html(article.favorites_count)}</span>
                     </virge:if>
                     <virge:if test="${not empty sessionScope.currentUserId}">
-                        <form method="post" action="${root}/views/profile/${virge:urlparam(profile.username)}/articles/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}?tab=${profileTab}" class="favorite-form">
+                        <form method="post" action="${root}/views/profile/${virge:urlparam(profile.profile_slug)}/articles/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}?tab=${profileTab}" class="favorite-form">
                             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
                             <button type="submit" class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</button>
                         </form>

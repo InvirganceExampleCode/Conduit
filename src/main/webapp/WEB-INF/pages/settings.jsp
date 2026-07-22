@@ -10,8 +10,8 @@
         <form method="post" action="${root}/auth/settings" class="auth-form">
             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
             <label>
-                Username
-                <input name="username" value="${virge:html(sessionScope.currentUsername)}" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_]+" autocomplete="username">
+                Full name
+                <input name="name" value="${virge:html(sessionScope.currentUsername)}" required minlength="2" maxlength="128" autocomplete="name" placeholder="Full name">
             </label>
             <label>
                 Email

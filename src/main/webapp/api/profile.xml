@@ -25,7 +25,8 @@
                                     a.title as "title",
                                     a.description as "description",
                                     cast(a.created_at as varchar) as "created_at",
-                                    u.username as "username",
+                                    u.name as "username",
+                                    u.slug as "profile_slug",
                                     'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=80' as "image",
                                     (select count(*) from favorites f where f.article_id = a.id) as "favorites_count",
                                     exists(
@@ -42,10 +43,10 @@
                                     and exists(
                                         select 1 from favorites profile_favorite
                                         join users profile_user on profile_user.id = profile_favorite.user_id
-                                        where profile_favorite.article_id = a.id and profile_user.username = :username
+                                        where profile_favorite.article_id = a.id and profile_user.slug = :username
                                     )
                                 ) or (
-                                    :tab <> 'favorited' and u.username = :username
+                                    :tab <> 'favorited' and u.slug = :username
                                 )
                                 order by a.created_at desc, a.id desc, article_tag.name
                             ]]></sql>
@@ -54,7 +55,7 @@
                     <transformers>
                         <list>
                             <SortedGroupByTransformer>
-                                <fields>slug,title,description,created_at,username,image,favorites_count,favorited</fields>
+                                <fields>slug,title,description,created_at,username,profile_slug,image,favorites_count,favorited</fields>
                                 <output>tagList</output>
                             </SortedGroupByTransformer>
                         </list>
@@ -81,7 +82,8 @@
                             <sql><![CDATA[
                                 select
                                     u.id as "id",
-                                    u.username as "username",
+                                    u.name as "username",
+                                    u.slug as "profile_slug",
                                     u.bio as "bio",
                                     'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=160' as "image",
                                     exists(
@@ -89,7 +91,7 @@
                                         where f.follower_id = :currentUserId and f.followed_id = u.id
                                     ) as "following"
                                 from users u
-                                where u.username = :username
+                                where u.slug = :username
                             ]]></sql>
                         </QueryBinding>
                     </binding>

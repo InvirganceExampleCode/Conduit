@@ -33,5 +33,17 @@ class MarkdownTransformerTest
 
         assertFalse(record.getString("bodyHtml").contains("javascript:"));
     }
-}
 
+    @Test
+    void preservesFencedCodeLanguageForClientSideHighlighting()
+    {
+        var record = new JSONObject();
+        record.put("body", "```java\npublic class Example {}\n```");
+
+        new MarkdownTransformer().transform(record);
+
+        String html = record.getString("bodyHtml");
+        assertTrue(html.contains("<code class=\"language-java\">"));
+        assertTrue(html.contains("public class Example {}"));
+    }
+}

@@ -28,7 +28,8 @@
                                     cast(a.body as varchar) as "body",
                                     cast(a.created_at as varchar) as "created_at",
                                     cast(a.updated_at as varchar) as "updated_at",
-                                    u.username as "username",
+                                    u.name as "username",
+                                    u.slug as "profile_slug",
                                     u.bio as "bio",
                                     'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=80' as "image",
                                     (select count(*) from favorites f where f.article_id = a.id) as "favorites_count",
@@ -49,7 +50,7 @@
                     <transformers>
                         <list>
                             <SortedGroupByTransformer>
-                                <fields>id,author_id,slug,title,description,body,created_at,updated_at,username,bio,image,favorites_count,favorited</fields>
+                                <fields>id,author_id,slug,title,description,body,created_at,updated_at,username,profile_slug,bio,image,favorites_count,favorited</fields>
                                 <output>tagList</output>
                             </SortedGroupByTransformer>
                             <MarkdownTransformer>
@@ -79,7 +80,8 @@
                                     c.body as "body",
                                     cast(c.created_at as varchar) as "created_at",
                                     cast(c.updated_at as varchar) as "updated_at",
-                                    u.username as "username",
+                                    u.name as "username",
+                                    u.slug as "profile_slug",
                                     u.bio as "bio",
                                     'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=80' as "image"
                                 from comments c

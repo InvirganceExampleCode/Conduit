@@ -22,7 +22,7 @@
                 <div class="article-meta article-hero-meta">
                     <img class="avatar" src="${virge:html(article.image)}" alt="">
                     <div>
-                        <a class="article-author" href="${root}/views/profile/${virge:urlparam(article.username)}">${virge:html(article.username)}</a>
+                        <a class="article-author" href="${root}/views/profile/${virge:urlparam(article.profile_slug)}">${virge:html(article.username)}</a>
                         <time>${virge:html(article.created_at)}</time>
                     </div>
                     <virge:if test="${empty sessionScope.currentUserId}">
@@ -75,7 +75,7 @@
             <article class="comment">
                 <p>${virge:html(comment.body)}</p>
                 <footer>
-                    <a href="${root}/views/profile/${virge:urlparam(comment.username)}">${virge:html(comment.username)}</a> · ${virge:html(comment.created_at)}
+                    <a href="${root}/views/profile/${virge:urlparam(comment.profile_slug)}">${virge:html(comment.username)}</a> · ${virge:html(comment.created_at)}
                     <virge:if test="${sessionScope.currentUserId eq comment.author_id}">
                         <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/comments/${comment.id}/delete-comment" class="inline-form">
                             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">

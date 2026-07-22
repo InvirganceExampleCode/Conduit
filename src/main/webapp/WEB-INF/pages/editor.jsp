@@ -17,22 +17,43 @@
         <label>Description
             <input name="description" value="${virge:html(article.description)}" required maxlength="1024">
         </label>
-        <label>Article body (Markdown)
-            <textarea name="body" required rows="14">${virge:html(article.body)}</textarea>
-        </label>
-        <fieldset class="tag-editor">
+        <div class="markdown-editor" data-markdown-editor data-preview-url="${root}/api/markdown">
+            <span class="markdown-editor-label">Article body (Markdown)</span>
+            <div class="markdown-tabs" role="tablist" aria-label="Article body">
+                <button type="button" class="markdown-tab active" role="tab" aria-selected="true" aria-controls="markdown-write" data-markdown-write>Write</button>
+                <button type="button" class="markdown-tab" role="tab" aria-selected="false" aria-controls="markdown-preview" data-markdown-preview>Preview</button>
+            </div>
+            <div id="markdown-write" class="markdown-panel" role="tabpanel">
+                <label class="sr-only" for="article-body">Article body</label>
+                <textarea id="article-body" name="body" required rows="16" data-markdown-body>${virge:html(article.body)}</textarea>
+            </div>
+            <div id="markdown-preview" class="markdown-panel markdown-preview markdown" role="tabpanel" hidden data-markdown-output></div>
+            <p class="markdown-status" role="status" aria-live="polite" data-markdown-status></p>
+        </div>
+        <fieldset class="tag-editor" data-tag-editor>
             <legend>Tags</legend>
-            <virge:iterate var="tag" items="${article.tagList}">
-                <label>Tag
-                    <input name="tags" value="${virge:html(tag.name)}" maxlength="64">
-                </label>
-            </virge:iterate>
-            <label>${empty article ? 'Tags, separated by commas' : 'Additional tags, separated by commas'}
-                <input name="tags" maxlength="512">
-            </label>
+            <div class="tag-list" data-tag-list aria-live="polite">
+                <virge:iterate var="tag" items="${article.tagList}">
+                    <span class="tag-chip" data-tag-value="${virge:html(tag.name)}">
+                        <span>${virge:html(tag.name)}</span>
+                        <button type="button" class="tag-remove" aria-label="Remove ${virge:html(tag.name)}" data-tag-remove>&times;</button>
+                        <input type="hidden" name="tagName" value="${virge:html(tag.name)}">
+                    </span>
+                </virge:iterate>
+            </div>
+            <div class="tag-entry-row">
+                <label for="tag-entry">Add tags</label>
+                <div class="tag-entry-controls">
+                    <input id="tag-entry" data-tag-entry maxlength="512" placeholder="java, convirgance">
+                    <button type="button" data-tag-add>Add</button>
+                </div>
+            </div>
+            <p class="tag-help">Enter one tag or separate multiple tags with commas. Press Enter or choose Add.</p>
         </fieldset>
         <button type="submit">Publish article</button>
     </form>
 </main>
 
+<script src="${root}/resources/markdown-editor.js" defer></script>
+<script src="${root}/resources/tag-editor.js" defer></script>
 <jsp:include page="/include/footer.jsp" />

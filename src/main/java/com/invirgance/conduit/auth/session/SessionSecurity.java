@@ -44,7 +44,10 @@ public final class SessionSecurity
     {
         Session session = request().getSession();
         session.setAttribute("currentUserId", user.get("id"));
-        session.setAttribute("currentUsername", user.get("username"));
+        session.setAttribute("currentUsername", user.get("username") == null ? user.get("name") : user.get("username"));
+
+        Object profileSlug = user.get("profileSlug") == null ? user.get("slug") : user.get("profileSlug");
+        if(profileSlug != null) session.setAttribute("currentProfileSlug", profileSlug);
         session.setAttribute("currentEmail", user.get("email"));
         session.setAttribute("currentBio", user.get("bio"));
         session.setAttribute("currentImage", user.get("image"));
@@ -57,6 +60,7 @@ public final class SessionSecurity
         Session session = request().getSession();
         session.setAttribute("currentUserId", null);
         session.setAttribute("currentUsername", null);
+        session.setAttribute("currentProfileSlug", null);
         session.setAttribute("currentEmail", null);
         session.setAttribute("currentBio", null);
         session.setAttribute("currentImage", null);

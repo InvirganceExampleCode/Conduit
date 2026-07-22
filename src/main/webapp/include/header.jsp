@@ -9,6 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${virge:html(requestScope.pageTitle)}</title>
+    <link rel="stylesheet" href="${root}/webjars/highlightjs__cdn-assets/11.11.1/styles/github.min.css">
     <link rel="stylesheet" href="${root}/resources/conduit.css">
 </head>
 <body>
@@ -24,7 +25,7 @@
                 <virge:if test="${not empty sessionScope.currentUserId}">
                     <a href="${root}/views/editor/create">New article</a>
                     <a href="${root}/auth/settings">Settings</a>
-                    <a href="${root}/views/profile/${virge:urlparam(sessionScope.currentUsername)}">${virge:html(sessionScope.currentUsername)}</a>
+                    <a href="${root}/views/profile/${virge:urlparam(sessionScope.currentProfileSlug)}">${virge:html(sessionScope.currentUsername)}</a>
                     <form method="post" action="${root}/auth/logout" class="nav-form">
                         <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
                         <button type="submit" class="link-button">Log out</button>

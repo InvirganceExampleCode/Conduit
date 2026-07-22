@@ -17,7 +17,8 @@
                             <sql><![CDATA[
                                 select
                                     id as "id",
-                                    username as "username",
+                                    name as "username",
+                                    slug as "profileSlug",
                                     email as "email",
                                     password_hash as "passwordHash",
                                     bio as "bio",

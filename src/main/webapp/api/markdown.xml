@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RESTService>
+    <POST>
+        <AuthenticatedService>
+        <service>
+        <SelectService>
+            <parameters>
+                <list>
+                    <RequestParameter><name>body</name></RequestParameter>
+                    <CsrfParameter />
+                </list>
+            </parameters>
+            <binding>
+                <QueryBinding>
+                    <jndiName>jdbc/conduit</jndiName>
+                    <sql>select cast(:body as text) as "body"</sql>
+                </QueryBinding>
+            </binding>
+            <transformers>
+                <list><MarkdownTransformer /></list>
+            </transformers>
+            <output><JSONOutput /></output>
+        </SelectService>
+        </service>
+        <redirectToLogin>false</redirectToLogin>
+        </AuthenticatedService>
+    </POST>
+</RESTService>

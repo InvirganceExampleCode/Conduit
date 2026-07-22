@@ -11,14 +11,13 @@
             <transformers>
                 <list>
                     <CsrfValidationTransformer />
-                    <NotBlankValidation><key>username</key></NotBlankValidation>
-                    <SizeValidation><key>username</key><min>3</min><max>32</max></SizeValidation>
-                    <RegExValidation><key>username</key><regex>[A-Za-z0-9_]+</regex></RegExValidation>
+                    <NotBlankValidation><key>name</key></NotBlankValidation>
+                    <SizeValidation><key>name</key><min>2</min><max>128</max></SizeValidation>
                     <NotBlankValidation><key>email</key></NotBlankValidation>
                     <RegExValidation><key>email</key><regex>[^@\s]+@[^@\s]+\.[^@\s]+</regex></RegExValidation>
                     <NotBlankValidation><key>password</key></NotBlankValidation>
                     <SizeValidation><key>password</key><min>8</min></SizeValidation>
-                    <PasswordHashTransformer />
+                    <PasswordHashTransformer><generateSlug>true</generateSlug></PasswordHashTransformer>
                 </list>
             </transformers>
             <consumer>
@@ -27,8 +26,8 @@
                         <QueryConsumer>
                             <jndiName>jdbc/conduit</jndiName>
                             <sql><![CDATA[
-                                insert into users (id, email, username, password_hash)
-                                values (:id, :email, :username, :passwordHash)
+                                insert into users (id, email, username, name, slug, password_hash)
+                                values (:id, :email, :slug, :name, :slug, :passwordHash)
                             ]]></sql>
                             <sequenceSql>select nextval('conduit_ids')</sequenceSql>
                             <sequenceId>id</sequenceId>
@@ -58,9 +57,8 @@
             <transformers>
                 <list>
                     <CsrfValidationTransformer />
-                    <NotBlankValidation><key>username</key></NotBlankValidation>
-                    <SizeValidation><key>username</key><min>3</min><max>32</max></SizeValidation>
-                    <RegExValidation><key>username</key><regex>[A-Za-z0-9_]+</regex></RegExValidation>
+                    <NotBlankValidation><key>name</key></NotBlankValidation>
+                    <SizeValidation><key>name</key><min>2</min><max>128</max></SizeValidation>
                     <NotBlankValidation><key>email</key></NotBlankValidation>
                     <RegExValidation><key>email</key><regex>[^@\s]+@[^@\s]+\.[^@\s]+</regex></RegExValidation>
                     <SizeValidation><key>bio</key><max>1024</max></SizeValidation>
@@ -74,7 +72,7 @@
                             <jndiName>jdbc/conduit</jndiName>
                             <sql><![CDATA[
                                 update users
-                                set username = :username,
+                                set name = :name,
                                     email = :email,
                                     bio = nullif(:bio, ''),
                                     password_hash = coalesce(:passwordHash, password_hash),
