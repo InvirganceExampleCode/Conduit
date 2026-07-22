@@ -13,8 +13,8 @@
     <main class="container layout">
         <section aria-labelledby="feed-title">
             <virge:set var="followingFeed" value="${param.feed eq 'following' and not empty sessionScope.currentUserId}" />
-            <virge:set var="feedService" value="${followingFeed ? '/services/feed' : '/services/articles'}" />
-            <virge:set var="feedCountService" value="${followingFeed ? '/services/feed/count' : '/services/articles/count'}" />
+            <virge:set var="feedService" value="${followingFeed ? '/api/feed' : '/api/articles'}" />
+            <virge:set var="feedCountService" value="${followingFeed ? '/api/feed/count' : '/api/articles/count'}" />
             <div class="feed-tabs">
                 <nav aria-label="Article feeds">
                     <virge:if test="${not empty sessionScope.currentUserId}">
@@ -96,7 +96,7 @@
 
         <aside class="sidebar">
             <h2>Popular tags</h2>
-            <virge:service var="popularTags" path="/services/tags" />
+            <virge:service var="popularTags" path="/api/tags" />
             <div class="tag-cloud">
                 <virge:iterate var="tag" items="${popularTags}">
                     <a class="${param.tag eq tag.name ? 'active' : ''}" href="?tag=${virge:urlparam(tag.name)}">${virge:html(tag.name)}</a>

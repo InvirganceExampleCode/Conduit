@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SelectService>
+    <!-- Popular tags API. -->
     <binding>
         <QueryBinding>
             <jndiName>jdbc/conduit</jndiName>

@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
-<virge:service var="articles" path="/services/article/${param.slug}" />
-<virge:service var="comments" path="/services/article/${param.slug}/comments" />
+<virge:service var="articles" path="/api/article/${param.slug}" />
+<virge:service var="comments" path="/api/article/${param.slug}/comments" />
 <virge:set var="article" value="${virge:first(articles)}" scope="request" />
 <virge:set var="pageTitle" value="${article.title} — Conduit" scope="request" />
 <jsp:include page="/include/header.jsp" />

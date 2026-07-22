@@ -1,38 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<AuthenticatedService>
+<!-- Personal feed API. -->
+<service>
 <PaginatedTableService>
     <pageSize>20</pageSize>
     <parameters>
         <list>
-            <SessionParameter>
-                <name>currentUserId</name>
-                <sessionKey>currentUserId</sessionKey>
-                <defaultValue>0</defaultValue>
-            </SessionParameter>
+            <SessionParameter><name>currentUserId</name><sessionKey>currentUserId</sessionKey></SessionParameter>
             <RequestParameter><name>tag</name></RequestParameter>
         </list>
     </parameters>
     <page>
-        <RequestParameter>
-            <name>page</name>
-            <defaultValue>1</defaultValue>
-        </RequestParameter>
+        <RequestParameter><name>page</name><defaultValue>1</defaultValue></RequestParameter>
     </page>
     <search>
-        <RequestParameter>
-            <name>search</name>
-        </RequestParameter>
+        <RequestParameter><name>search</name></RequestParameter>
     </search>
     <sort>
-        <RequestParameter>
-            <name>sort</name>
-            <defaultValue>created_at</defaultValue>
-        </RequestParameter>
+        <RequestParameter><name>sort</name><defaultValue>created_at</defaultValue></RequestParameter>
     </sort>
     <sortDirection>
-        <RequestParameter>
-            <name>descending</name>
-            <defaultValue>true</defaultValue>
-        </RequestParameter>
+        <RequestParameter><name>descending</name><defaultValue>true</defaultValue></RequestParameter>
     </sortDirection>
     <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, name</columns>
     <searchKeys>title, description, username</searchKeys>
@@ -57,6 +45,7 @@
             article_tag.name as name
         from articles a
         join users u on u.id = a.author_id
+        join follows following on following.followed_id = a.author_id and following.follower_id = :currentUserId
         left join article_tags article_tag_link on article_tag_link.article_id = a.id
         left join tags article_tag on article_tag.id = article_tag_link.tag_id
         where coalesce(cast(:tag as varchar), '') = ''
@@ -74,7 +63,8 @@
             </SortedGroupByTransformer>
         </list>
     </transformers>
-    <output>
-        <JSONOutput />
-    </output>
+    <output><JSONOutput /></output>
 </PaginatedTableService>
+</service>
+<redirectToLogin>false</redirectToLogin>
+</AuthenticatedService>

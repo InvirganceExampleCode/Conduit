@@ -1,11 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AuthenticatedService>
-<service>
 <RoutedService>
     <routes>
         <map>
             <entry>
+                <string>/api/articles</string>
+                <PaginatedTableService id="article_pages">
+                    <pageSize>20</pageSize>
+                    <parameters>
+                        <list>
+                            <SessionParameter>
+                                <name>currentUserId</name>
+                                <sessionKey>currentUserId</sessionKey>
+                                <defaultValue>0</defaultValue>
+                            </SessionParameter>
+                            <RequestParameter><name>tag</name></RequestParameter>
+                        </list>
+                    </parameters>
+                    <page>
+                        <RequestParameter><name>page</name><defaultValue>1</defaultValue></RequestParameter>
+                    </page>
+                    <search>
+                        <RequestParameter><name>search</name></RequestParameter>
+                    </search>
+                    <sort>
+                        <RequestParameter><name>sort</name><defaultValue>created_at</defaultValue></RequestParameter>
+                    </sort>
+                    <sortDirection>
+                        <RequestParameter><name>descending</name><defaultValue>true</defaultValue></RequestParameter>
+                    </sortDirection>
+                    <columns>id, slug, title, description, created_at, updated_at, username, bio, image, favorites_count, favorited, name</columns>
+                    <searchKeys>title, description, username</searchKeys>
+                    <primaryKey>id</primaryKey>
+                    <jndiName>jdbc/conduit</jndiName>
+                    <sql><![CDATA[
+                        select
+                            a.id as id,
+                            a.slug as slug,
+                            a.title as title,
+                            a.description as description,
+                            cast(a.created_at as varchar) as created_at,
+                            cast(a.updated_at as varchar) as updated_at,
+                            u.username as username,
+                            u.bio as bio,
+                            'https://www.gravatar.com/avatar/' || lower(rawtohex(hash('MD5', stringtoutf8(lower(trim(u.email)))))) || '?d=identicon&s=80' as image,
+                            (select count(*) from favorites f where f.article_id = a.id) as favorites_count,
+                            exists(
+                                select 1 from favorites f
+                                where f.article_id = a.id and f.user_id = :currentUserId
+                            ) as favorited,
+                            article_tag.name as name
+                        from articles a
+                        join users u on u.id = a.author_id
+                        left join article_tags article_tag_link on article_tag_link.article_id = a.id
+                        left join tags article_tag on article_tag.id = article_tag_link.tag_id
+                        where coalesce(cast(:tag as varchar), '') = ''
+                           or exists(
+                                select 1 from article_tags selected_at
+                                join tags selected_tag on selected_tag.id = selected_at.tag_id
+                                where selected_at.article_id = a.id and selected_tag.name = :tag
+                           )
+                    ]]></sql>
+                    <transformers>
+                        <list>
+                            <SortedGroupByTransformer>
+                                <fields>id,slug,title,description,created_at,updated_at,username,bio,image,favorites_count,favorited</fields>
+                                <output>tagList</output>
+                            </SortedGroupByTransformer>
+                        </list>
+                    </transformers>
+                    <output><JSONOutput /></output>
+                </PaginatedTableService>
+            </entry>
+            <entry>
+                <string>/api/articles/count</string>
+                <ref id="article_pages" />
+            </entry>
+            <entry>
                 <string>/api/articles/*/favorite</string>
+                <AuthenticatedService>
+                <service>
                 <RESTService>
                     <POST>
                         <UpdateService>
@@ -41,9 +114,14 @@
                         </UpdateService>
                     </DELETE>
                 </RESTService>
+                </service>
+                <redirectToLogin>false</redirectToLogin>
+                </AuthenticatedService>
             </entry>
             <entry>
                 <string>/api/articles/*/comments</string>
+                <AuthenticatedService>
+                <service>
                 <RESTService>
                     <POST>
                         <UpdateService>
@@ -65,9 +143,14 @@
                         </UpdateService>
                     </POST>
                 </RESTService>
+                </service>
+                <redirectToLogin>false</redirectToLogin>
+                </AuthenticatedService>
             </entry>
             <entry>
                 <string>/api/articles/*/comments/*</string>
+                <AuthenticatedService>
+                <service>
                 <RESTService>
                     <DELETE>
                         <UpdateService>
@@ -89,9 +172,14 @@
                         </UpdateService>
                     </DELETE>
                 </RESTService>
+                </service>
+                <redirectToLogin>false</redirectToLogin>
+                </AuthenticatedService>
             </entry>
             <entry>
                 <string>/api/articles/create</string>
+                <AuthenticatedService>
+                <service>
                 <RESTService>
                     <POST>
                         <ReturningUpdateService>
@@ -135,9 +223,14 @@
                         </ReturningUpdateService>
                     </POST>
                 </RESTService>
+                </service>
+                <redirectToLogin>false</redirectToLogin>
+                </AuthenticatedService>
             </entry>
             <entry>
                 <string>/api/articles/*</string>
+                <AuthenticatedService>
+                <service>
                 <RESTService>
                     <PUT>
                         <UpdateService>
@@ -202,10 +295,10 @@
                         </UpdateService>
                     </DELETE>
                 </RESTService>
+                </service>
+                <redirectToLogin>false</redirectToLogin>
+                </AuthenticatedService>
             </entry>
         </map>
     </routes>
 </RoutedService>
-</service>
-<redirectToLogin>false</redirectToLogin>
-</AuthenticatedService>

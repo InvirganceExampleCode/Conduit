@@ -15,7 +15,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ServicesServlet</servlet-name>
-        <url-pattern>/services/*</url-pattern>
         <url-pattern>/views/*</url-pattern>
     </servlet-mapping>
 

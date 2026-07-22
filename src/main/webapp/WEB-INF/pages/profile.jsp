@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
-<virge:service var="profiles" path="/services/profile/${param.username}" />
+<virge:service var="profiles" path="/api/profile/${param.username}" />
 <virge:set var="profileTab" value="${param.tab eq 'favorited' ? 'favorited' : 'articles'}" />
-<virge:service var="articles" path="/services/profile/${param.username}/articles">
+<virge:service var="articles" path="/api/profile/${param.username}/articles">
     <virge:parameter name="tab" value="${profileTab}" />
 </virge:service>
 <virge:set var="profile" value="${virge:first(profiles)}" scope="request" />

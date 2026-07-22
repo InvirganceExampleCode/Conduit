@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="convirgance:web" prefix="virge" %>
 <virge:if test="${not empty param.slug}">
-    <virge:service var="articles" path="/services/article/${param.slug}" />
+    <virge:service var="articles" path="/api/article/${param.slug}" />
     <virge:set var="article" value="${virge:first(articles)}" scope="request" />
 </virge:if>
 <virge:set var="pageTitle" value="${empty article ? 'New article — Conduit' : 'Edit article — Conduit'}" scope="request" />

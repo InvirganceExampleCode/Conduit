@@ -3,11 +3,11 @@
     <routes>
         <map>
             <entry>
-                <string>/services/article</string>
+                <string>/api/article</string>
                 <SelectService>
                     <parameters>
                         <list>
-                            <PathVariable><path>/services/article/{slug}</path></PathVariable>
+                            <PathVariable><path>/api/article/{slug}</path></PathVariable>
                             <SessionParameter>
                                 <name>currentUserId</name>
                                 <sessionKey>currentUserId</sessionKey>
@@ -62,11 +62,11 @@
                 </SelectService>
             </entry>
             <entry>
-                <string>/services/article/*/comments</string>
+                <string>/api/article/*/comments</string>
                 <SelectService>
                     <parameters>
                         <list>
-                            <PathVariable><path>/services/article/{slug}/comments</path></PathVariable>
+                            <PathVariable><path>/api/article/{slug}/comments</path></PathVariable>
                         </list>
                     </parameters>
                     <binding>
