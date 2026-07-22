@@ -49,6 +49,8 @@ button:hover, .button:hover { background: var(--green-dark); }
 .avatar { width: 2rem; height: 2rem; border-radius: 50%; display: block; object-fit: cover; color: white; background: var(--green); }
 .author { color: var(--green); text-decoration: none; }
 .favorites { margin-left: auto; padding: .15rem .5rem; border: 1px solid var(--green); border-radius: .2rem; color: var(--green); }
+.favorites-login { text-decoration: none; }
+.favorites-login:hover { color: white; background: var(--green); }
 .favorite-form { margin-left: auto; }
 .favorite-form .favorites { margin-left: 0; background: transparent; }
 .favorite-form .favorites:hover { color: white; background: var(--green); }

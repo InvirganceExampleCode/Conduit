@@ -2,7 +2,9 @@
 <%@taglib uri="convirgance:web" prefix="virge" %>
 <virge:set var="article" value="${args.article}" />
 <virge:if test="${empty sessionScope.currentUserId}">
-    <span class="favorites">${article.favorited ? '♥' : '♡'} ${virge:html(article.favorites_count)}</span>
+    <a class="favorites favorites-login" href="${root}/auth/login" title="Sign in to favorite this article" aria-label="Sign in to favorite this article">
+        ♡ ${virge:html(article.favorites_count)}
+    </a>
 </virge:if>
 <virge:if test="${not empty sessionScope.currentUserId}">
     <form method="post" action="${args.action}" class="favorite-form">
