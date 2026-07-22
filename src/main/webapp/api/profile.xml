@@ -26,7 +26,7 @@
                                     a.description as "description",
                                     cast(a.created_at as varchar) as "created_at",
                                     u.username as "username",
-                                    'https://www.gravatar.com/avatar/' || lower(rawtohex(hash('MD5', stringtoutf8(lower(trim(u.email)))))) || '?d=identicon&s=80' as "image",
+                                    'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=80' as "image",
                                     (select count(*) from favorites f where f.article_id = a.id) as "favorites_count",
                                     exists(
                                         select 1 from favorites f
@@ -83,7 +83,7 @@
                                     u.id as "id",
                                     u.username as "username",
                                     u.bio as "bio",
-                                    'https://www.gravatar.com/avatar/' || lower(rawtohex(hash('MD5', stringtoutf8(lower(trim(u.email)))))) || '?d=identicon&s=160' as "image",
+                                    'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=160' as "image",
                                     exists(
                                         select 1 from follows f
                                         where f.follower_id = :currentUserId and f.followed_id = u.id

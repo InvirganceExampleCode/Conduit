@@ -30,7 +30,7 @@
                                 insert into users (id, email, username, password_hash)
                                 values (:id, :email, :username, :passwordHash)
                             ]]></sql>
-                            <sequenceSql>select next value for conduit_ids</sequenceSql>
+                            <sequenceSql>select nextval('conduit_ids')</sequenceSql>
                             <sequenceId>id</sequenceId>
                         </QueryConsumer>
                     </consumer>

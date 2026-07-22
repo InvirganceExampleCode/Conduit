@@ -1,15 +1,6 @@
-DROP TABLE IF EXISTS favorites;
-DROP TABLE IF EXISTS follows;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS article_tags;
-DROP TABLE IF EXISTS tags;
-DROP TABLE IF EXISTS articles;
-DROP TABLE IF EXISTS users;
-DROP SEQUENCE IF EXISTS conduit_ids;
+CREATE SEQUENCE IF NOT EXISTS conduit_ids START WITH 1000;
 
-CREATE SEQUENCE conduit_ids START WITH 1000;
-
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id BIGINT PRIMARY KEY,
     email VARCHAR(320) NOT NULL,
     username VARCHAR(64) NOT NULL,
@@ -22,26 +13,26 @@ CREATE TABLE users (
     CONSTRAINT users_username_unique UNIQUE (username)
 );
 
-CREATE TABLE articles (
+CREATE TABLE IF NOT EXISTS articles (
     id BIGINT PRIMARY KEY,
     author_id BIGINT NOT NULL,
     slug VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     description VARCHAR(1024) NOT NULL,
-    body CLOB NOT NULL,
+    body TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT articles_slug_unique UNIQUE (slug),
     CONSTRAINT articles_author_fk FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
-CREATE TABLE tags (
+CREATE TABLE IF NOT EXISTS tags (
     id BIGINT PRIMARY KEY,
     name VARCHAR(64) NOT NULL,
     CONSTRAINT tags_name_unique UNIQUE (name)
 );
 
-CREATE TABLE article_tags (
+CREATE TABLE IF NOT EXISTS article_tags (
     article_id BIGINT NOT NULL,
     tag_id BIGINT NOT NULL,
     PRIMARY KEY (article_id, tag_id),
@@ -49,7 +40,7 @@ CREATE TABLE article_tags (
     CONSTRAINT article_tags_tag_fk FOREIGN KEY (tag_id) REFERENCES tags(id)
 );
 
-CREATE TABLE comments (
+CREATE TABLE IF NOT EXISTS comments (
     id BIGINT PRIMARY KEY,
     article_id BIGINT NOT NULL,
     author_id BIGINT NOT NULL,
@@ -60,7 +51,7 @@ CREATE TABLE comments (
     CONSTRAINT comments_author_fk FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
-CREATE TABLE favorites (
+CREATE TABLE IF NOT EXISTS favorites (
     user_id BIGINT NOT NULL,
     article_id BIGINT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,7 +60,7 @@ CREATE TABLE favorites (
     CONSTRAINT favorites_article_fk FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE follows (
+CREATE TABLE IF NOT EXISTS follows (
     follower_id BIGINT NOT NULL,
     followed_id BIGINT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -79,10 +70,9 @@ CREATE TABLE follows (
     CONSTRAINT follows_followed_fk FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX articles_created_idx ON articles(created_at DESC, id DESC);
-CREATE INDEX articles_author_idx ON articles(author_id, created_at DESC);
-CREATE INDEX comments_article_idx ON comments(article_id, created_at);
-CREATE INDEX article_tags_tag_idx ON article_tags(tag_id, article_id);
-CREATE INDEX favorites_article_idx ON favorites(article_id);
-CREATE INDEX follows_followed_idx ON follows(followed_id);
-
+CREATE INDEX IF NOT EXISTS articles_created_idx ON articles(created_at DESC, id DESC);
+CREATE INDEX IF NOT EXISTS articles_author_idx ON articles(author_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS comments_article_idx ON comments(article_id, created_at);
+CREATE INDEX IF NOT EXISTS article_tags_tag_idx ON article_tags(tag_id, article_id);
+CREATE INDEX IF NOT EXISTS favorites_article_idx ON favorites(article_id);
+CREATE INDEX IF NOT EXISTS follows_followed_idx ON follows(followed_id);

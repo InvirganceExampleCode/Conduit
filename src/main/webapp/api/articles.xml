@@ -42,7 +42,7 @@
                             cast(a.updated_at as varchar) as updated_at,
                             u.username as username,
                             u.bio as bio,
-                            'https://www.gravatar.com/avatar/' || lower(rawtohex(hash('MD5', stringtoutf8(lower(trim(u.email)))))) || '?d=identicon&s=80' as image,
+                            'https://www.gravatar.com/avatar/' || md5(lower(trim(u.email))) || '?d=identicon&s=80' as image,
                             (select count(*) from favorites f where f.article_id = a.id) as favorites_count,
                             exists(
                                 select 1 from favorites f
@@ -91,8 +91,9 @@
                             </parameters>
                             <jndiName>jdbc/conduit</jndiName>
                             <sql><![CDATA[
-                                merge into favorites (user_id, article_id) key(user_id, article_id)
+                                insert into favorites (user_id, article_id)
                                 select :userId, a.id from articles a where a.slug = :slug
+                                on conflict (user_id, article_id) do nothing
                             ]]></sql>
                         </UpdateService>
                     </POST>
@@ -136,7 +137,7 @@
                             <jndiName>jdbc/conduit</jndiName>
                             <sql><![CDATA[
                                 insert into comments (id, article_id, author_id, body)
-                                select next value for conduit_ids, a.id, :authorId, :body
+                                select nextval('conduit_ids'), a.id, :authorId, :body
                                 from articles a
                                 where a.slug = :slug and length(trim(:body)) > 0
                             ]]></sql>
@@ -197,24 +198,24 @@
                             <jndiName>jdbc/conduit</jndiName>
                             <sql><![CDATA[
                                 insert into articles (id, author_id, slug, title, description, body)
-                                values (next value for conduit_ids, :authorId, :slug, :title, :description, :body)
+                                values (nextval('conduit_ids'), :authorId, :slug, :title, :description, :body)
                             ]]></sql>
                             <children>
                                 <map>
                                     <entry>
                                         <string>tagList</string>
                                         <string><![CDATA[
-                                            merge into article_tags (article_id, tag_id) key(article_id, tag_id)
+                                            with selected_tag as (
+                                                insert into tags (id, name)
+                                                values (nextval('conduit_ids'), :tagName)
+                                                on conflict (name) do update set name = excluded.name
+                                                returning id
+                                            )
+                                            insert into article_tags (article_id, tag_id)
                                             select a.id, t.id
-                                            from articles a,
-                                            final table (
-                                                merge into tags t
-                                                using (values(cast(:tagName as varchar))) s(name)
-                                                on t.name = s.name
-                                                when matched then update set name = t.name
-                                                when not matched then insert (id, name) values (next value for conduit_ids, s.name)
-                                            ) t
+                                            from articles a cross join selected_tag t
                                             where a.slug = :slug
+                                            on conflict (article_id, tag_id) do nothing
                                         ]]></string>
                                     </entry>
                                 </map>
@@ -264,17 +265,17 @@
                                     <entry>
                                         <string>tagList</string>
                                         <string><![CDATA[
-                                            merge into article_tags (article_id, tag_id) key(article_id, tag_id)
+                                            with selected_tag as (
+                                                insert into tags (id, name)
+                                                values (nextval('conduit_ids'), :tagName)
+                                                on conflict (name) do update set name = excluded.name
+                                                returning id
+                                            )
+                                            insert into article_tags (article_id, tag_id)
                                             select a.id, t.id
-                                            from articles a,
-                                            final table (
-                                                merge into tags t
-                                                using (values(cast(:tagName as varchar))) s(name)
-                                                on t.name = s.name
-                                                when matched then update set name = t.name
-                                                when not matched then insert (id, name) values (next value for conduit_ids, s.name)
-                                            ) t
+                                            from articles a cross join selected_tag t
                                             where a.slug = :slug and a.author_id = :authorId
+                                            on conflict (article_id, tag_id) do nothing
                                         ]]></string>
                                     </entry>
                                 </map>

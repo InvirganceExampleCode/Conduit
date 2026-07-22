@@ -18,10 +18,11 @@
                             </parameters>
                             <jndiName>jdbc/conduit</jndiName>
                             <sql><![CDATA[
-                                merge into follows (follower_id, followed_id) key(follower_id, followed_id)
+                                insert into follows (follower_id, followed_id)
                                 select :followerId, u.id
                                 from users u
                                 where u.username = :username and u.id <> :followerId
+                                on conflict (follower_id, followed_id) do nothing
                             ]]></sql>
                         </UpdateService>
                     </POST>
