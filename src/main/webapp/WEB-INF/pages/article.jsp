@@ -28,11 +28,12 @@
                     <component:include page="/WEB-INF/components/favorite-control.jsp">
                         <component:arg name="article" value="${article}" />
                         <component:arg name="action" value="${root}/views/article/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" />
+                        <component:arg name="loginRedirect" value="views/article/${virge:urlparam(article.slug)}" />
                     </component:include>
                     <virge:if test="${sessionScope.currentUserId eq article.author_id}">
                         <span class="owner-actions">
                             <a href="${root}/views/editor/${virge:urlparam(article.slug)}/edit">Edit article</a>
-                            <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/delete" class="inline-form">
+                            <form method="post" action="${root}/views/article/${virge:urlparam(article.slug)}/delete" class="inline-form" data-confirm="Delete this article? This cannot be undone.">
                                 <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
                                 <button type="submit" class="link-button danger-link">Delete article</button>
                             </form>

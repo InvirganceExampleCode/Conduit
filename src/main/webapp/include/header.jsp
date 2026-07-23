@@ -19,7 +19,7 @@
             <div class="nav-links">
                 <a href="${root}/">Home</a>
                 <virge:if test="${empty sessionScope.currentUserId}">
-                    <a href="${root}/auth/login">Sign in</a>
+                    <a href="${root}/auth/login?returnTo=${virge:urlparam(pageContext.request.requestURI.substring(1))}">Sign in</a>
                     <a href="${root}/auth/register">Sign up</a>
                 </virge:if>
                 <virge:if test="${not empty sessionScope.currentUserId}">

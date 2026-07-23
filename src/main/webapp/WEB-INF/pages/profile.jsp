@@ -50,6 +50,7 @@
                 <component:arg name="article" value="${article}" />
                 <component:arg name="favoriteAction" value="${root}/views/profile/${virge:urlparam(profile.profile_slug)}/articles/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}?tab=${profileTab}" />
                 <component:arg name="tagBaseUrl" value="${root}/?tag=" />
+                <component:arg name="loginRedirect" value="views/profile/${virge:urlparam(profile.profile_slug)}?tab=${profileTab}" />
             </component:include>
         </virge:iterate>
         </virge:if>

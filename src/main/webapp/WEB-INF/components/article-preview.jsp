@@ -11,6 +11,7 @@
         <component:include page="/WEB-INF/components/favorite-control.jsp">
             <component:arg name="article" value="${article}" />
             <component:arg name="action" value="${args.favoriteAction}" />
+            <component:arg name="loginRedirect" value="${args.loginRedirect}" />
         </component:include>
     </div>
     <a class="article-link" href="${root}/views/article/${virge:urlparam(article.slug)}">

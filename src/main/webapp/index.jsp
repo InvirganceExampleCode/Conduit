@@ -58,16 +58,21 @@
                     <component:arg name="article" value="${article}" />
                     <component:arg name="favoriteAction" value="${root}/views/favorite/${virge:urlparam(article.slug)}/${article.favorited ? 'unfavorite' : 'favorite'}" />
                     <component:arg name="tagBaseUrl" value="?tag=" />
+                    <component:arg name="loginRedirect" value="" />
                 </component:include>
             </virge:iterate>
 
             <virge:if test="${summary.count gt 0}">
                 <nav class="pagination" aria-label="Article pages">
-                    <a class="${currentPage <= 1 ? 'disabled' : ''}"
-                       href="?page=${currentPage - 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;tag=${virge:urlparam(param.tag)}&amp;search=${virge:urlparam(param.search)}">Previous</a>
+                    <virge:if test="${currentPage <= 1}"><span class="disabled" aria-disabled="true">Previous</span></virge:if>
+                    <virge:if test="${currentPage > 1}">
+                        <a href="?page=${currentPage - 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;tag=${virge:urlparam(param.tag)}&amp;search=${virge:urlparam(param.search)}">Previous</a>
+                    </virge:if>
                     <span>Page ${virge:html(currentPage)} of ${virge:html(summary.pages)}</span>
-                    <a class="${currentPage >= summary.pages ? 'disabled' : ''}"
-                       href="?page=${currentPage + 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;tag=${virge:urlparam(param.tag)}&amp;search=${virge:urlparam(param.search)}">Next</a>
+                    <virge:if test="${currentPage >= summary.pages}"><span class="disabled" aria-disabled="true">Next</span></virge:if>
+                    <virge:if test="${currentPage < summary.pages}">
+                        <a href="?page=${currentPage + 1}&amp;feed=${followingFeed ? 'following' : ''}&amp;tag=${virge:urlparam(param.tag)}&amp;search=${virge:urlparam(param.search)}">Next</a>
+                    </virge:if>
                 </nav>
             </virge:if>
         </section>

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <HypermediaService>
+    <parameters>
+        <list>
+            <ValidatedRequestParameter>
+                <name>returnTo</name>
+                <label>Return destination</label>
+                <required>false</required>
+                <maxLength>2048</maxLength>
+                <regex>(?!/)(?!.*(?:^|/)\.\.(?:/|$))[A-Za-z0-9_./?&amp;=%+~-]*</regex>
+            </ValidatedRequestParameter>
+        </list>
+    </parameters>
     <page>/WEB-INF/pages/login.jsp</page>
     <verbs>
         <list>

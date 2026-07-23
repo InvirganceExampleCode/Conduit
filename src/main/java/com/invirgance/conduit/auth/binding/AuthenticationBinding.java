@@ -5,6 +5,8 @@ import com.invirgance.convirgance.json.JSONObject;
 import com.invirgance.convirgance.web.binding.Binding;
 import com.invirgance.convirgance.wiring.annotation.Wiring;
 import com.invirgance.conduit.auth.session.SessionSecurity;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import org.mindrot.jbcrypt.BCrypt;
 
 /** Converts a user lookup into either an authenticated user or a login-failure result. */
@@ -30,11 +32,11 @@ public class AuthenticationBinding implements Binding
             }
         }
 
-        if(user == null || !passwordMatches(parameters.getString("password"), user.getString("passwordHash"))) return failure();
+        if(user == null || !passwordMatches(parameters.getString("password"), user.getString("passwordHash"))) return failure(parameters.getString("returnTo"));
 
         user.remove("passwordHash");
         user.put("authenticated", true);
-        user.put("redirect", "");
+        user.put("redirect", parameters.getString("returnTo") == null ? "" : parameters.getString("returnTo"));
         return new JSONArray<>(user);
     }
 
@@ -46,12 +48,12 @@ public class AuthenticationBinding implements Binding
         catch(IllegalArgumentException exception) { return false; }
     }
 
-    private Iterable<JSONObject> failure()
+    private Iterable<JSONObject> failure(String returnTo)
     {
         var failure = new JSONObject();
         failure.put("authenticated", false);
         failure.put("authenticationFailed", true);
-        failure.put("redirect", "auth/login?authenticationFailed=true");
+        failure.put("redirect", "auth/login?authenticationFailed=true&returnTo=" + URLEncoder.encode(returnTo == null ? "" : returnTo, StandardCharsets.UTF_8));
         return new JSONArray<>(failure);
     }
 }

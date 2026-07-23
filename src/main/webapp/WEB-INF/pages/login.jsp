@@ -13,6 +13,7 @@
         </virge:if>
         <form method="post" action="${root}/auth/login" class="auth-form">
             <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
+            <input type="hidden" name="returnTo" value="${virge:html(param.returnTo)}">
             <label>Email
                 <input type="email" name="email" value="${virge:html(requestScope.email)}" required autocomplete="email">
             </label>

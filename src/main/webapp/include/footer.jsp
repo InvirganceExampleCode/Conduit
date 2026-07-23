@@ -8,5 +8,6 @@
     <script src="${root}/webjars/highlightjs__cdn-assets/11.11.1/highlight.min.js"></script>
     <script src="${root}/resources/code-highlighting.js"></script>
     <script src="${root}/resources/relative-time.js"></script>
+    <script src="${root}/resources/confirm-actions.js"></script>
 </body>
 </html>

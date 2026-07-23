@@ -12,7 +12,7 @@
             <a href="${root}/views/profile/${virge:urlparam(comment.profile_slug)}">${virge:html(comment.username)}</a> ·
             <time datetime="${virge:html(comment.created_at)}" data-relative-time>${virge:html(comment.created_at)}</time>
             <virge:if test="${sessionScope.currentUserId eq comment.author_id}">
-                <form method="post" action="${root}/views/article/${virge:urlparam(args.article.slug)}/comments/${comment.id}/delete-comment" class="inline-form">
+                <form method="post" action="${root}/views/article/${virge:urlparam(args.article.slug)}/comments/${comment.id}/delete-comment" class="inline-form" data-confirm="Delete this comment? This cannot be undone.">
                     <input type="hidden" name="csrf" value="${virge:html(sessionScope.csrfToken)}">
                     <button type="submit" class="link-button danger-link">Delete</button>
                 </form>

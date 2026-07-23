@@ -2,7 +2,7 @@
 <%@taglib uri="convirgance:web" prefix="virge" %>
 <virge:set var="article" value="${args.article}" />
 <virge:if test="${empty sessionScope.currentUserId}">
-    <a class="favorites favorites-login" href="${root}/auth/login" title="Sign in to favorite this article" aria-label="Sign in to favorite this article">
+    <a class="favorites favorites-login" href="${root}/auth/login?returnTo=${virge:urlparam(args.loginRedirect)}" title="Sign in to favorite this article" aria-label="Sign in to favorite this article">
         ♡ ${virge:html(article.favorites_count)}
     </a>
 </virge:if>

@@ -7,6 +7,13 @@
                     <RequestParameter><name>email</name></RequestParameter>
                     <RequestParameter><name>password</name></RequestParameter>
                     <RequestParameter><name>csrf</name></RequestParameter>
+                    <ValidatedRequestParameter>
+                        <name>returnTo</name>
+                        <label>Return destination</label>
+                        <required>false</required>
+                        <maxLength>2048</maxLength>
+                        <regex>(?!/)(?!.*(?:^|/)\.\.(?:/|$))[A-Za-z0-9_./?&amp;=%+~-]*</regex>
+                    </ValidatedRequestParameter>
                 </list>
             </parameters>
             <binding>
